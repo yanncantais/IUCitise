@@ -138,7 +138,7 @@
             // label_version
             // 
             this.label_version.AutoSize = true;
-            this.label_version.ForeColor = System.Drawing.Color.DarkGray;
+            this.label_version.ForeColor = System.Drawing.Color.Gray;
             this.label_version.Location = new System.Drawing.Point(3, 373);
             this.label_version.Name = "label_version";
             this.label_version.Size = new System.Drawing.Size(126, 37);
