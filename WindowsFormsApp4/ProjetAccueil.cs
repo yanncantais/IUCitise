@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using static WindowsFormsApp4.ChatSystem;
 using static WindowsFormsApp4.OnlineCalendar;
 using static WindowsFormsApp4.MarkSystem;
+using static WindowsFormsApp4.NotificationManager;
 using System.Globalization;
 using System.Windows.Forms.DataVisualization.Charting;
 using iTextSharp.text;
@@ -16,6 +17,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.html;
 using iTextSharp.text.html.simpleparser;
 using Rectangle = iTextSharp.text.Rectangle;
+using System.Threading;
 
 namespace WindowsFormsApp4
 {
@@ -27,6 +29,7 @@ namespace WindowsFormsApp4
         public NpgsqlDataReader dr;
         bool scrolled = false;
         int first = 1;
+        Thread chatThread;
         bool sound = true;
         bool vis = true;
         public Parametres parametres;
@@ -57,6 +60,7 @@ namespace WindowsFormsApp4
         {
             InitializeComponent();
             this.CenterToScreen();
+            chatThread = new Thread(new ThreadStart(ThreadLoop));
             this.Text = "Gestionnaire CiTiSE - " + Properties.Settings.Default.prenom;
             this.button1.Image = (System.Drawing.Image)(new Bitmap(btn_liensujmmootse.Image, new Size(32, 32)));
             this.button2.Image = (System.Drawing.Image)(new Bitmap(btn_quitter.Image, new Size(32, 32)));
@@ -212,27 +216,23 @@ namespace WindowsFormsApp4
         {
 
         }
-        //-----------------------TIMER POUR RECUPERER LES ELEVES EN LIGNE-----------------
-        private void timer_online_Tick(object sender, EventArgs e)
+        //-----------------------THREAD POUR RECUPERER LES ELEVES EN LIGNE-----------------
+        private void ThreadLoop()
         {
-            try
+            while (true)
             {
-                timer_online.Start();
-                if (first == 1)
+                try
                 {
-                    AllMessageLists(txtbox_message, con, sound, vis, 1, txtbox_sendmsg);
-                    first = 0;
+                    this.Invoke(new MethodInvoker(delegate { AllMessageLists(); }));
+                    this.Invoke(new MethodInvoker(delegate { RefreshOnline(); }));
+                    Console.WriteLine("OK");
+                    Thread.Sleep(200);
                 }
-                else
+                catch
                 {
-                    AllMessageLists(txtbox_message, con, sound, vis, 0, txtbox_sendmsg);
+                    Console.WriteLine("Stop");
+                    break;
                 }
-                RefreshOnline(con, lb_Online);
-            }
-            catch
-            {
-                MessageBox.Show("Veuillez vérifier votre connexion", "Connexion impossible");
-                timer_online.Stop();
             }
         }
         //--------------------CHARGEMENT DU PANEL PRINCIPAL---------------------
@@ -300,6 +300,7 @@ namespace WindowsFormsApp4
             refreshMoyennG();
             //End MarkSystem.cs
             lbl_warningeval.Text = lbl_warningeval.Text + lv_nextEval.Items.Count.ToString() + " évaluation(s) prévue(s) pour les 7 prochains jours";
+            chatThread.Start();
         }
 
         //------------------------EMPECHE L'UTILISATEUR DE REDIMENSIONNER LA COLONNE DES LISTVIEW-------------
@@ -328,19 +329,6 @@ namespace WindowsFormsApp4
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
-        }
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-
-        }
-        private void panel4_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void btn_cleanchat_Click(object sender, EventArgs e)
@@ -807,6 +795,127 @@ namespace WindowsFormsApp4
                 ms.Close();
 
                 return ms.ToArray();
+            }
+        }
+
+//========ChatSystem utilisé dans le thread================//
+        /// <summary>
+        /// Récupère  les messages par ordre d'envoi dans la base de donnée en ligne. Les messages sont affichés dans la RichTextBox.
+        /// </summary>
+        public void AllMessageLists()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                con.Close();
+                con.Open();
+                NpgsqlCommand cmd = new NpgsqlCommand("SELECT * FROM message ORDER BY id ASC", con);
+                NpgsqlCommand comm = new NpgsqlCommand("SELECT COUNT(*) FROM message", con);
+                int id = System.Convert.ToInt32(comm.ExecuteScalar());//Nombre de messages dans la base de donnée
+                cmd.ExecuteNonQuery();
+                NpgsqlDataReader dr = cmd.ExecuteReader();
+                dt.Load(dr);
+                if (id != 0)
+                {
+                    if (txtbox_message.Lines.Length == 2)//On demande si le chat local est vide. Si oui, on recup tous les messages de la bdd
+                    {
+                        if (dt.Rows != null)
+                        {
+                            foreach (DataRow drow in dt.Rows)
+                            {
+                                txtbox_message.Text += "\n" + "(" + drow["time"].ToString() + " / " + drow["idetu"].ToString() + ") :  " + drow["msg"].ToString();
+                            }
+                            txtbox_message.SelectionStart = txtbox_message.TextLength;
+                            txtbox_message.ScrollToCaret();
+                            if (sound == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
+                            {
+                                PlayNotificationSound();
+                            }
+                            if (vis == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
+                            {
+                                NotifyPopup("Nouveau message de " + dt.Rows[id - 1]["idetu"].ToString(), dt.Rows[id - 1]["msg"].ToString(), txtbox_sendmsg);
+                            }
+                        }
+                    }
+                    else if (id > txtbox_message.Lines.Length - 2)//Si le chat local est deja rempli, on regarde si il y a un nouveau message dans la bdd 
+                    {
+                        txtbox_message.Text += "\n" + "(" + dt.Rows[id - 1]["time"].ToString() + " / " + dt.Rows[id - 1]["idetu"].ToString() + ") :  " + dt.Rows[id - 1]["msg"].ToString();
+                        txtbox_message.SelectionStart = txtbox_message.TextLength;
+                        txtbox_message.ScrollToCaret();
+                        if (sound == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
+                        {
+                            PlayNotificationSound();
+                        }
+                        if (vis == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
+                        {
+                            NotifyPopup("Nouveau message de " + dt.Rows[id - 1]["idetu"].ToString(), dt.Rows[id - 1]["msg"].ToString(), txtbox_sendmsg);
+                        }
+                    }
+                }
+                else//Si la base de donnée est vide
+                {
+                    txtbox_message.Text = "Bienvenue dans le chat..." + "\n";
+                }
+                con.Close();
+            }
+            catch
+            {
+
+            }
+        }
+        /// <summary>
+        /// Rafraîchit la ListBox passée en paramètre en affichant les élèves connectés.
+        /// </summary>
+        public void RefreshOnline()
+        {
+            try
+            {
+                DataTable dtOn = new DataTable();
+                DataTable dtOff = new DataTable();
+                con.Close();
+                con.Open();
+                NpgsqlCommand cmdOnline = new NpgsqlCommand("SELECT * FROM citise2 where isonline = @IsOnline", con);
+                cmdOnline.Parameters.AddWithValue("@IsOnline", 1);
+                NpgsqlDataReader dr = cmdOnline.ExecuteReader();
+                dtOn.Load(dr);
+                if (dtOn.Rows != null)
+                {
+                    foreach (DataRow drow in dtOn.Rows)
+                    {
+                        if (lb_Online.Items.Count == 0)
+                        {
+                            lb_Online.Items.Add(drow["prenom"].ToString() + " " + drow["nom"].ToString());
+                        }
+                        else
+                        {
+                            if (lb_Online.Items.Contains(drow["prenom"].ToString() + " " + drow["nom"].ToString()) == false)
+                            {
+                                lb_Online.Items.Add(drow["prenom"].ToString() + " " + drow["nom"].ToString());
+                            }
+                        }
+                    }
+                }
+                NpgsqlCommand cmdOffline = new NpgsqlCommand("SELECT * FROM citise2 where isonline = @IsOnline", con);
+                cmdOffline.Parameters.AddWithValue("@IsOnline", 0);
+                NpgsqlDataReader droff = cmdOffline.ExecuteReader();
+                dtOff.Load(droff);
+                if (dtOff.Rows != null)
+                {
+                    foreach (DataRow drow in dtOff.Rows)
+                    {
+                        if (lb_Online.Items.Contains(drow["prenom"].ToString() + " " + drow["nom"].ToString()))
+                        {
+                            int off = lb_Online.Items.IndexOf(drow["prenom"].ToString() + " " + drow["nom"].ToString());
+                            lb_Online.Items.RemoveAt(off);
+
+                        }
+                    }
+                }
+                con.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
             }
         }
         //---------------------------FIN DU FONCTION-----------------------

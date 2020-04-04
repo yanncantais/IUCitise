@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjetAccueil));
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -117,7 +116,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.timer_online = new System.Windows.Forms.Timer(this.components);
             this.panel4 = new System.Windows.Forms.Panel();
             this.btn_quitter = new System.Windows.Forms.Button();
             this.metroPanel1.SuspendLayout();
@@ -307,9 +305,7 @@
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Size = new System.Drawing.Size(2048, 1226);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
-            // 
+            this.tabPage1.Text = "tabPage1";            // 
             // lbl_bonjour
             // 
             this.lbl_bonjour.AutoSize = true;
@@ -1240,12 +1236,6 @@
             this.panel1.Size = new System.Drawing.Size(60, 1288);
             this.panel1.TabIndex = 12;
             // 
-            // timer_online
-            // 
-            this.timer_online.Enabled = true;
-            this.timer_online.Interval = 500;
-            this.timer_online.Tick += new System.EventHandler(this.timer_online_Tick);
-            // 
             // panel4
             // 
             this.panel4.BackColor = System.Drawing.SystemColors.Control;
@@ -1353,7 +1343,6 @@
         private System.Windows.Forms.Label lbl_hello;
         private System.Windows.Forms.ListBox lb_Online;
         private System.Windows.Forms.Label lbl_online;
-        private System.Windows.Forms.Timer timer_online;
         private System.Windows.Forms.Button btn_envoyer;
         private System.Windows.Forms.TextBox txtbox_sendmsg;
         public System.Windows.Forms.RichTextBox txtbox_message;
