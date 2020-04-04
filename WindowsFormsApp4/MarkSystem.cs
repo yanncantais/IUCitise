@@ -12,6 +12,9 @@ namespace WindowsFormsApp4
 {
     class MarkSystem
     {
+        /// <summary>
+        /// Ajoute une note dans la base de donnée.
+        /// </summary>
         public static void setOnlineMark(NpgsqlConnection con, string matière, double note, double coef, int id)
         {
             try
@@ -34,7 +37,10 @@ namespace WindowsFormsApp4
                 MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
             }
         }
-        
+
+        /// <summary>
+        /// Supprime une note en fonction de son id dans la base de donnée.
+        /// </summary>
         public static void deleteOnlineMark(NpgsqlConnection con, int id)
         {
             try
@@ -60,6 +66,9 @@ namespace WindowsFormsApp4
 
         }
 
+        /// <summary>
+        /// Retourn un DataAdapter contenant les données du relevé de notes.
+        /// </summary>
         public static NpgsqlDataAdapter getOnlineMark(NpgsqlConnection con)
         {
             NpgsqlDataAdapter da = null;
@@ -89,6 +98,9 @@ namespace WindowsFormsApp4
             return da;
         }
 
+        /// <summary>
+        /// Construit la forme du bulletin dans une base de donnée tampon.
+        /// </summary>
         private static void buildBulletin(NpgsqlConnection con, string matière)
         {
             try
@@ -103,7 +115,9 @@ namespace WindowsFormsApp4
                 MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
             }
         }
-
+        /// <summary>
+        /// Retourne la moyenne générale d'une matière
+        /// </summary>
         public static double getMoyenne(NpgsqlConnection con, string matière)
         {
             double moyenne = 0;
@@ -122,7 +136,9 @@ namespace WindowsFormsApp4
             moyenne = Math.Round(moyenne, 2);
             return moyenne;
         }
-
+        /// <summary>
+        /// Renvoie la moyenne générale du bloc théorique.
+        /// </summary>
         public static double calcMoyenneBlocTh(NpgsqlConnection con)
         {
             double moyenne, math, inter, thermo, coefmath, coefinter, coefthermo;
@@ -156,7 +172,9 @@ namespace WindowsFormsApp4
             moyenne = Math.Round(moyenne, 2);
             return moyenne;
         }
-
+        /// <summary>
+        /// Renvoie la moyenne générale du bloc IUT.
+        /// </summary>
         public static double calcMoyenneBlocIUT(NpgsqlConnection con)
         {
             double moyenne, os25, at41, rcp20, rcp30, coefos25, coefat41, coefrcp20, coefrcp30;
@@ -196,6 +214,9 @@ namespace WindowsFormsApp4
             moyenne = Math.Round(moyenne, 2);
             return moyenne;
         }
+        /// <summary>
+        /// Renvoie la moyenne générale du bloc communication.
+        /// </summary>
         public static double calcMoyenneBlocCom(NpgsqlConnection con)
         {
             double moyenne, anglais, com, coefanglais, coefcom;
@@ -223,6 +244,9 @@ namespace WindowsFormsApp4
             moyenne = Math.Round(moyenne, 2);
             return moyenne;
         }
+        /// <summary>
+        /// Renvoie la moyenne générale du bloc projet.
+        /// </summary>
         public static double calcMoyenneBlocProjet(NpgsqlConnection con)
         {
             double moyenne, er4, c, coefer4, coefc;

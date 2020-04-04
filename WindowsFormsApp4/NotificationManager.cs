@@ -5,6 +5,9 @@ namespace WindowsFormsApp4
 {
     class NotificationManager
     {
+        /// <summary>
+        /// Joue le son de la notification.
+        /// </summary>
         public static void PlayNotificationSound()
         {
             try
@@ -17,6 +20,9 @@ namespace WindowsFormsApp4
 
             }
         }
+        /// <summary>
+        /// Fait apparaître une notification sur le bord droit de l'écran et redonne le focus à la textbox
+        /// </summary>
         public static void NotifyPopup(string title, string content, TextBox t)
         {
             PopupNotifier popup = new PopupNotifier();
