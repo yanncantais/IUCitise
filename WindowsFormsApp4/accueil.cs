@@ -44,34 +44,23 @@ namespace WindowsFormsApp4
             }
             label_version.Text = "V" + Properties.Settings.Default.version;
         }
-
         private void button1_Click(object sender, EventArgs e)
-        {
-            
-            
+        {  
             inscription n = new inscription();
             n.Show();
-            
+            this.Hide();
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void btn_quitter_Click(object sender, EventArgs e)
         {
             this.Close();
             Application.Exit();
         }
-
         private void btn_connexion_Click(object sender, EventArgs e)
         {
             connexion n = new connexion();
             n.Show();
             this.Hide();
         }
-
         private void accueil_Load(object sender, EventArgs e)
         {
             if (start)

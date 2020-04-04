@@ -75,6 +75,7 @@ namespace WindowsFormsApp4
         private void btn_valider_Click(object sender, EventArgs e)
         {
             btn_valider.Enabled = false;
+            con.Close();
             con.Open();
             if (txtbx_mdp.Text == txtbx_cmdp.Text)
             {
@@ -87,13 +88,20 @@ namespace WindowsFormsApp4
                 cmd.Parameters.AddWithValue("@Question", txtbx_qstn.Text);
                 cmd.ExecuteNonQuery();
                 MessageBox.Show("Vous avez fini votre inscription avec succès");
-                btn_valider_Click(sender, e);
             }
             else
             {
-                MessageBox.Show("erreur de confirmation de mot de passe");
+                MessageBox.Show("Mots de passes différents");
             }
             con.Close();
+            this.Close();
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form.Name == "accueil")
+                {
+                    form.Show();
+                }
+            }
             btn_valider.Enabled = true;
         }
     }
