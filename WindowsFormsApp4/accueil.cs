@@ -19,7 +19,7 @@ namespace WindowsFormsApp4
         public accueil()
         {
             InitializeComponent();
-            Properties.Settings.Default.version = "1.2.1";
+            Properties.Settings.Default.version = "1.2.0";
             try
             {
                 con.Open();
