@@ -37,7 +37,6 @@ namespace WindowsFormsApp4
                 MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
             }
         }
-
         /// <summary>
         /// Supprime une note en fonction de son id dans la base de donnée.
         /// </summary>
@@ -63,9 +62,7 @@ namespace WindowsFormsApp4
             {
                 MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
             }
-
         }
-
         /// <summary>
         /// Retourn un DataAdapter contenant les données du relevé de notes.
         /// </summary>
@@ -97,7 +94,6 @@ namespace WindowsFormsApp4
             }
             return da;
         }
-
         /// <summary>
         /// Construit la forme du bulletin dans une base de donnée tampon.
         /// </summary>
@@ -168,7 +164,6 @@ namespace WindowsFormsApp4
             {
                 moyenne = (math * coefmath + inter * coefinter + thermo * coefthermo) / (coefmath + coefinter + coefthermo);
             }
-
             moyenne = Math.Round(moyenne, 2);
             return moyenne;
         }
@@ -210,7 +205,6 @@ namespace WindowsFormsApp4
             {
                 moyenne = (os25 * coefos25 + at41 * coefat41 + rcp20 * coefrcp20 + rcp30*coefrcp30) / (coefos25 + coefat41 + coefrcp20 + coefrcp30);
             }
-
             moyenne = Math.Round(moyenne, 2);
             return moyenne;
         }
@@ -240,7 +234,6 @@ namespace WindowsFormsApp4
             {
                 moyenne = (anglais * coefanglais + com * coefcom) / (coefanglais + coefcom);
             }
-
             moyenne = Math.Round(moyenne, 2);
             return moyenne;
         }
@@ -270,7 +263,6 @@ namespace WindowsFormsApp4
             {
                 moyenne = (er4 * coefer4 + c * coefc) / (coefer4 + coefc);
             }
-
             moyenne = Math.Round(moyenne, 2);
             return moyenne;
         }

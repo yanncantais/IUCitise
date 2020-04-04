@@ -456,7 +456,7 @@ namespace WindowsFormsApp4
                         cmd.ExecuteNonQuery();
                         identifiantnote = Convert.ToInt32(cmd.ExecuteScalar()) + 1;
                     }
-
+                    
                     setOnlineMark(con, comboBox1.Text, note, coef, identifiantnote);
                     comboBox2.Items.Add(identifiantnote);
                     NpgsqlDataAdapter da = new NpgsqlDataAdapter();
@@ -477,7 +477,6 @@ namespace WindowsFormsApp4
             }
             button1.Enabled = true;
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
             button2.Enabled = false;
@@ -528,9 +527,7 @@ namespace WindowsFormsApp4
             label_moyiut.Text = "| " + moyenneiut.ToString();
             label_moycom.Text = "| " + moyennecom.ToString();
             label_moyprojet.Text = "| " + moyenneprojet.ToString();
-
         }
-
         private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
@@ -556,7 +553,6 @@ namespace WindowsFormsApp4
                     }
                 }
             }
-
         }
         void drawDatagrid()
         {
@@ -579,10 +575,8 @@ namespace WindowsFormsApp4
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.ReadOnly = true;
         }
-
         private void btn_savepdf_Click(object sender, EventArgs e)
         {
-
             if (dataGridView1.Rows.Count > 0)
             {
                 SaveFileDialog sfd = new SaveFileDialog();
@@ -682,14 +676,9 @@ namespace WindowsFormsApp4
                                     {
                                         continue;
                                     }
-                                    
-
                                     var Calibri8 = FontFactory.GetFont("Microsoft Sans Serif", 12, style, color);
-
                                     var titleChunk = new Chunk(cell.Value.ToString(), Calibri8);
-
                                     var phrase = new Phrase(titleChunk);
-
                                     PdfPCell cell1 = new PdfPCell(phrase);
                                     if (headermatiere == 1)
                                     {
@@ -744,7 +733,6 @@ namespace WindowsFormsApp4
                                 pdfDoc.Close();
                                 stream.Close();
                             }
-
                             MessageBox.Show("Fichier créé !", "Succès");
                         }
                         catch (Exception ex)
@@ -759,7 +747,6 @@ namespace WindowsFormsApp4
                 MessageBox.Show("Aucune donnée à exporter", "Erreur");
             }
         }
-
         void refreshMoyennG()
         {
             double moyenneth = calcMoyenneBlocTh(con);

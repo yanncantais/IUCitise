@@ -30,7 +30,6 @@ namespace WindowsFormsApp4
                 MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
             }
         }
-
         /// <summary>
         /// Récupère  les messages par ordre d'envoi dans la base de donnée en ligne. Les messages sont affichés dans la RichTextBox.
         /// </summary>
@@ -53,7 +52,7 @@ namespace WindowsFormsApp4
                     {
                         if (dt.Rows != null)
                         {
-                            foreach(DataRow drow in dt.Rows)
+                            foreach (DataRow drow in dt.Rows)
                             {
                                 txtbox_message.Text += "\n" + "(" + drow["time"].ToString() + " / " + drow["idetu"].ToString() + ") :  " + drow["msg"].ToString();
                             }
@@ -71,7 +70,7 @@ namespace WindowsFormsApp4
                     }
                     else if (id > txtbox_message.Lines.Length - 2)//Si le chat local est deja rempli, on regarde si il y a un nouveau message dans la bdd 
                     {
-                        txtbox_message.Text += "\n" + "(" + dt.Rows[id-1]["time"].ToString() + " / " + dt.Rows[id-1]["idetu"].ToString() + ") :  " + dt.Rows[id-1]["msg"].ToString();
+                        txtbox_message.Text += "\n" + "(" + dt.Rows[id - 1]["time"].ToString() + " / " + dt.Rows[id - 1]["idetu"].ToString() + ") :  " + dt.Rows[id - 1]["msg"].ToString();
                         txtbox_message.SelectionStart = txtbox_message.TextLength;
                         txtbox_message.ScrollToCaret();
                         if (sound == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
@@ -84,15 +83,12 @@ namespace WindowsFormsApp4
                         }
                     }
                 }
-
                 else//Si la base de donnée est vide
                 {
                     txtbox_message.Text = "Bienvenue dans le chat..." + "\n";
                 }
                 conMsg.Close();
-
             }
-
             catch
             {
                 MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
@@ -122,7 +118,8 @@ namespace WindowsFormsApp4
                 {
                     MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
                 }
-            }        }
+            }        
+        }
         /// <summary>
         /// Rafraîchit la ListBox passée en paramètre en affichant les élèves connectés.
         /// </summary>
