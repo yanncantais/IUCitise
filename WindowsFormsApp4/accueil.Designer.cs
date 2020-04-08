@@ -54,6 +54,7 @@
             this.label1.Text = "IUCitise";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label1.UseCompatibleTextRendering = true;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // btn_inscription
             // 
