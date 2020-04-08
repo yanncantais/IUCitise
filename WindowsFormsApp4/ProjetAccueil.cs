@@ -39,7 +39,7 @@ namespace WindowsFormsApp4
             Name = "L1",
             BackColor = Color.Transparent,
             ForeColor = Color.Black,
-            Title = "Légende",
+            Title = "Légend",
             TitleForeColor = Color.Black,
             Docking = Docking.Bottom
         };
