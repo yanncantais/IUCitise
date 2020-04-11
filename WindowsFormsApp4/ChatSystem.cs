@@ -56,7 +56,6 @@ namespace WindowsFormsApp4
                 }
             }        
         }
-
         /// <summary>
         /// Actualise l'état de connexion dans la base de donnée.
         /// </summary>
