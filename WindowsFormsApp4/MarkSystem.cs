@@ -64,6 +64,31 @@ namespace WindowsFormsApp4
             }
         }
         /// <summary>
+        /// Supprime une note en fonction de son id dans la base de donnée.
+        /// </summary>
+        public static void deleteAllOnlineMark(NpgsqlConnection con)
+        {
+            try
+            {
+                con.Close();
+                con.Open();
+                NpgsqlCommand cmd = new NpgsqlCommand("DELETE FROM notes WHERE numetu = @numetu", con);
+                cmd.Parameters.AddWithValue("@numetu", Properties.Settings.Default.idetu);
+
+                cmd.ExecuteNonQuery();
+                cmd.Dispose();
+
+                cmd = new NpgsqlCommand("delete from moyennes", con);
+                cmd.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
+            }
+        }
+        /// <summary>
         /// Retourn un DataAdapter contenant les données du relevé de notes.
         /// </summary>
         public static NpgsqlDataAdapter getOnlineMark(NpgsqlConnection con)

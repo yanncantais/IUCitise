@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjetAccueil));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint1 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint2 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint3 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint4 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint5 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 10D);
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint6 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 10D);
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint7 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 10D);
-            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint8 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 10D);
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series16 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series17 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint41 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint42 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint43 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint44 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 0D);
+            System.Windows.Forms.DataVisualization.Charting.Series series18 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint45 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 10D);
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint46 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 10D);
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint47 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 10D);
+            System.Windows.Forms.DataVisualization.Charting.DataPoint dataPoint48 = new System.Windows.Forms.DataVisualization.Charting.DataPoint(0D, 10D);
             this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
             this.btn_liensujmmootse = new System.Windows.Forms.Button();
             this.btn_ressourcespartagées = new System.Windows.Forms.Button();
@@ -118,6 +118,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.btn_quitter = new System.Windows.Forms.Button();
+            this.btn_supprallnotes = new System.Windows.Forms.Button();
             this.metroPanel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -305,7 +306,8 @@
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Size = new System.Drawing.Size(2048, 1226);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";            // 
+            this.tabPage1.Text = "tabPage1";
+            // 
             // lbl_bonjour
             // 
             this.lbl_bonjour.AutoSize = true;
@@ -357,18 +359,18 @@
             // chart1
             // 
             this.chart1.BackColor = System.Drawing.SystemColors.Control;
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea11.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea11);
             this.chart1.Location = new System.Drawing.Point(710, 419);
             this.chart1.Margin = new System.Windows.Forms.Padding(6);
             this.chart1.Name = "chart1";
-            series1.BackSecondaryColor = System.Drawing.SystemColors.Control;
-            series1.BorderColor = System.Drawing.SystemColors.Control;
-            series1.ChartArea = "ChartArea1";
-            series1.LabelBackColor = System.Drawing.SystemColors.Control;
-            series1.LabelBorderColor = System.Drawing.SystemColors.Control;
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
+            series16.BackSecondaryColor = System.Drawing.SystemColors.Control;
+            series16.BorderColor = System.Drawing.SystemColors.Control;
+            series16.ChartArea = "ChartArea1";
+            series16.LabelBackColor = System.Drawing.SystemColors.Control;
+            series16.LabelBorderColor = System.Drawing.SystemColors.Control;
+            series16.Name = "Series1";
+            this.chart1.Series.Add(series16);
             this.chart1.Size = new System.Drawing.Size(976, 495);
             this.chart1.TabIndex = 19;
             this.chart1.Text = "chart1";
@@ -633,7 +635,9 @@
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage3.Controls.Add(this.btn_supprallnotes);
             this.tabPage3.Controls.Add(this.panel_imagepdf);
+            this.tabPage3.Controls.Add(this.btn_savepdf);
             this.tabPage3.Controls.Add(this.panel);
             this.tabPage3.Controls.Add(this.label_releve);
             this.tabPage3.Controls.Add(this.dataGridView1);
@@ -660,7 +664,7 @@
             this.panel_imagepdf.Controls.Add(this.label13);
             this.panel_imagepdf.Controls.Add(this.label_moyth);
             this.panel_imagepdf.Controls.Add(this.chart2);
-            this.panel_imagepdf.Location = new System.Drawing.Point(880, 479);
+            this.panel_imagepdf.Location = new System.Drawing.Point(880, 325);
             this.panel_imagepdf.Name = "panel_imagepdf";
             this.panel_imagepdf.Size = new System.Drawing.Size(1127, 696);
             this.panel_imagepdf.TabIndex = 36;
@@ -768,55 +772,54 @@
             // chart2
             // 
             this.chart2.BackColor = System.Drawing.Color.Transparent;
-            chartArea2.AxisY.Maximum = 20D;
-            chartArea2.AxisY.Minimum = 0D;
-            chartArea2.BackColor = System.Drawing.Color.White;
-            chartArea2.BorderColor = System.Drawing.Color.DarkGray;
-            chartArea2.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea2);
+            chartArea12.AxisY.Maximum = 20D;
+            chartArea12.AxisY.Minimum = 0D;
+            chartArea12.BackColor = System.Drawing.Color.White;
+            chartArea12.BorderColor = System.Drawing.Color.DarkGray;
+            chartArea12.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea12);
             this.chart2.Location = new System.Drawing.Point(275, 192);
             this.chart2.Name = "chart2";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Radar;
-            series2.Color = System.Drawing.Color.LightGreen;
-            series2.CustomProperties = "AreaDrawingStyle=Polygon";
-            series2.Name = "Series1";
-            dataPoint1.MarkerColor = System.Drawing.Color.Green;
-            dataPoint1.MarkerSize = 10;
-            dataPoint1.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            dataPoint2.MarkerColor = System.Drawing.Color.Green;
-            dataPoint2.MarkerSize = 10;
-            dataPoint2.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            dataPoint3.MarkerColor = System.Drawing.Color.Green;
-            dataPoint3.MarkerSize = 10;
-            dataPoint3.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            dataPoint4.MarkerColor = System.Drawing.Color.Green;
-            dataPoint4.MarkerSize = 10;
-            dataPoint4.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-            series2.Points.Add(dataPoint1);
-            series2.Points.Add(dataPoint2);
-            series2.Points.Add(dataPoint3);
-            series2.Points.Add(dataPoint4);
-            series3.BorderColor = System.Drawing.Color.Red;
-            series3.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
-            series3.BorderWidth = 2;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Radar;
-            series3.Color = System.Drawing.Color.Transparent;
-            series3.Name = "Series2";
-            series3.Points.Add(dataPoint5);
-            series3.Points.Add(dataPoint6);
-            series3.Points.Add(dataPoint7);
-            series3.Points.Add(dataPoint8);
-            this.chart2.Series.Add(series2);
-            this.chart2.Series.Add(series3);
+            series17.ChartArea = "ChartArea1";
+            series17.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Radar;
+            series17.Color = System.Drawing.Color.LightGreen;
+            series17.CustomProperties = "AreaDrawingStyle=Polygon";
+            series17.Name = "Series1";
+            dataPoint41.MarkerColor = System.Drawing.Color.Green;
+            dataPoint41.MarkerSize = 10;
+            dataPoint41.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            dataPoint42.MarkerColor = System.Drawing.Color.Green;
+            dataPoint42.MarkerSize = 10;
+            dataPoint42.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            dataPoint43.MarkerColor = System.Drawing.Color.Green;
+            dataPoint43.MarkerSize = 10;
+            dataPoint43.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            dataPoint44.MarkerColor = System.Drawing.Color.Green;
+            dataPoint44.MarkerSize = 10;
+            dataPoint44.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series17.Points.Add(dataPoint41);
+            series17.Points.Add(dataPoint42);
+            series17.Points.Add(dataPoint43);
+            series17.Points.Add(dataPoint44);
+            series18.BorderColor = System.Drawing.Color.Red;
+            series18.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Dash;
+            series18.BorderWidth = 2;
+            series18.ChartArea = "ChartArea1";
+            series18.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Radar;
+            series18.Color = System.Drawing.Color.Transparent;
+            series18.Name = "Series2";
+            series18.Points.Add(dataPoint45);
+            series18.Points.Add(dataPoint46);
+            series18.Points.Add(dataPoint47);
+            series18.Points.Add(dataPoint48);
+            this.chart2.Series.Add(series17);
+            this.chart2.Series.Add(series18);
             this.chart2.Size = new System.Drawing.Size(435, 435);
             this.chart2.TabIndex = 25;
             this.chart2.Text = "radarChart";
             // 
             // panel
             // 
-            this.panel.Controls.Add(this.btn_savepdf);
             this.panel.Controls.Add(this.label7);
             this.panel.Controls.Add(this.label6);
             this.panel.Controls.Add(this.comboBox2);
@@ -831,17 +834,17 @@
             this.panel.Controls.Add(this.label15);
             this.panel.Location = new System.Drawing.Point(793, 8);
             this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(1214, 448);
+            this.panel.Size = new System.Drawing.Size(1214, 311);
             this.panel.TabIndex = 31;
             // 
             // btn_savepdf
             // 
             this.btn_savepdf.ForeColor = System.Drawing.Color.Black;
-            this.btn_savepdf.Location = new System.Drawing.Point(313, 357);
+            this.btn_savepdf.Location = new System.Drawing.Point(836, 1137);
             this.btn_savepdf.Name = "btn_savepdf";
-            this.btn_savepdf.Size = new System.Drawing.Size(580, 53);
+            this.btn_savepdf.Size = new System.Drawing.Size(460, 53);
             this.btn_savepdf.TabIndex = 35;
-            this.btn_savepdf.Text = "Exporter le bulletin en PDF...";
+            this.btn_savepdf.Text = "Exporter le bulletin en PDF";
             this.btn_savepdf.UseVisualStyleBackColor = true;
             this.btn_savepdf.Click += new System.EventHandler(this.btn_savepdf_Click);
             // 
@@ -1261,6 +1264,17 @@
             this.btn_quitter.UseVisualStyleBackColor = false;
             this.btn_quitter.Click += new System.EventHandler(this.btn_quitter_Click);
             // 
+            // btn_supprallnotes
+            // 
+            this.btn_supprallnotes.ForeColor = System.Drawing.Color.Black;
+            this.btn_supprallnotes.Location = new System.Drawing.Point(1545, 1137);
+            this.btn_supprallnotes.Name = "btn_supprallnotes";
+            this.btn_supprallnotes.Size = new System.Drawing.Size(462, 53);
+            this.btn_supprallnotes.TabIndex = 36;
+            this.btn_supprallnotes.Text = "Supprimer toutes les notes";
+            this.btn_supprallnotes.UseVisualStyleBackColor = true;
+            this.btn_supprallnotes.Click += new System.EventHandler(this.btn_supprallnotes_Click);
+            // 
             // ProjetAccueil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -1385,5 +1399,6 @@
         private System.Windows.Forms.Label label_moyg;
         private System.Windows.Forms.Button btn_savepdf;
         private System.Windows.Forms.Panel panel_imagepdf;
+        private System.Windows.Forms.Button btn_supprallnotes;
     }
 }

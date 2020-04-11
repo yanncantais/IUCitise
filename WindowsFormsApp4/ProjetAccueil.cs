@@ -797,8 +797,26 @@ namespace WindowsFormsApp4
                 return ms.ToArray();
             }
         }
+        private void btn_supprallnotes_Click(object sender, EventArgs e)
+        {
+            btn_supprallnotes.Enabled = false;
+            if (MessageBox.Show("Êtes-vous sûr de vouloir supprimer toutes les notes ?", "Confirmation de suppression", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                deleteAllOnlineMark(con);
+                NpgsqlDataAdapter da = new NpgsqlDataAdapter();
+                da = getOnlineMark(con);
+                DataSet ds = new DataSet();
+                da.Fill(ds, "moyennes");
+                dataGridView1.DataSource = ds;
+                dataGridView1.DataMember = "moyennes";
+                con.Close();
+                refreshRadarGraph();
+                refreshMoyennG();
+            }
+            btn_supprallnotes.Enabled = true;
+        }
 
-//========ChatSystem utilisé dans le thread================//
+        //========ChatSystem utilisé dans le thread================//
         /// <summary>
         /// Récupère  les messages par ordre d'envoi dans la base de donnée en ligne. Les messages sont affichés dans la RichTextBox.
         /// </summary>
@@ -863,6 +881,7 @@ namespace WindowsFormsApp4
 
             }
         }
+
         /// <summary>
         /// Rafraîchit la ListBox passée en paramètre en affichant les élèves connectés.
         /// </summary>
