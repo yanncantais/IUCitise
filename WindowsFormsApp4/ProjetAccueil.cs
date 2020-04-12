@@ -880,6 +880,7 @@ namespace WindowsFormsApp4
             {
 
             }
+            con.Close();
         }
 
         /// <summary>
@@ -936,6 +937,7 @@ namespace WindowsFormsApp4
             {
                 MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
             }
+            con.Close();
         }
         //---------------------------FIN DU FONCTION-----------------------
     }

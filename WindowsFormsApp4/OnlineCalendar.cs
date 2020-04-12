@@ -21,9 +21,11 @@ namespace WindowsFormsApp4
         /// </summary>
         public static void GetIcal(ListView[] listlbCal, NpgsqlConnection conEdt, NpgsqlConnection conEdt1, ListView nextEval)
         {
-            try
+          try
             {
                 nextEval.Items.Clear();
+            conEdt.Close();
+            conEdt1.Close();
                 conEdt.Open();
                 conEdt1.Open();
 
@@ -99,10 +101,10 @@ namespace WindowsFormsApp4
                 }
                 conEdt.Close();
                 conEdt1.Close();
-            }
+           }
             catch
             {
-                MessageBox.Show("Vérifier la connexion internet", "Connexion impossible");
+                MessageBox.Show("Impossible de récupérer l'agenda distant", "Connexion impossible");
             }
         }
         /// <summary>
@@ -585,6 +587,8 @@ namespace WindowsFormsApp4
                         }
                     }
                 }
+                conEdt.Close();
+                conEdtAdd.Close();
                 conEdt.Open();
                 conEdtAdd.Open();
                 NpgsqlCommand comm2 = new NpgsqlCommand("SELECT COUNT(*) FROM edt where idetu = @Idetu", conEdt);
