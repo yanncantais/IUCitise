@@ -173,21 +173,6 @@ namespace WindowsFormsApp4
             //function for open pop up in a new browser
             this.carregar_popup_new_browser(obj);
         }
-        //--------------FONCTION QUI GERE LES POPUP---------------------s
-        void axBrowser_NewWindow(string URL, int Flags, string TargetFrameName, ref object PostData, string Headers, ref bool Processed)
-        {
-            // cancel the PopUp event  
-            Processed = true;
-
-            // send the popup URL to the WebBrowser control  
-            chromeBrowser1.Load(URL);
-        }
-        //----------------FIN DE FONCTION--------------------------
-
-        private void metroTabPage2_Click(object sender, EventArgs e)
-        {
-
-        }
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
             if (scrolled)
