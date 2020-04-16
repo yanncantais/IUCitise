@@ -241,6 +241,7 @@
     <Compile Include="Parametres.Designer.cs">
       <DependentUpon>Parametres.cs</DependentUpon>
     </Compile>
+    <Compile Include="PopupSystem.cs" />
     <Compile Include="ProjetAccueil.cs">
       <SubType>Form</SubType>
     </Compile>

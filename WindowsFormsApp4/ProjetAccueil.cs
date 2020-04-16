@@ -20,6 +20,7 @@ using Rectangle = iTextSharp.text.Rectangle;
 using System.Threading;
 using CefSharp;
 using CefSharp.WinForms;
+using static WindowsFormsApp4.PopupSystem;
 
 namespace WindowsFormsApp4
 {
@@ -148,11 +149,29 @@ namespace WindowsFormsApp4
             chromeBrowser1.Size = metroTabPage1.Size;
             chromeBrowser2 = new ChromiumWebBrowser("https://cas.univ-st-etienne.fr/esup-cas/login?service=https://ent.univ-st-etienne.fr/uPortal/Login");
             metroTabPage2.Controls.Add(chromeBrowser2);
+            LifespanHandler life = new LifespanHandler();
+            chromeBrowser2.LifeSpanHandler = life;
+            life.popup_request += life_popup_request;
             this.CenterToParent();
             chromeBrowser2.Size = metroTabPage2.Size;
 
 
 
+        }
+        private void carregar_popup_new_browser(string url)
+        {
+            chromeBrowser2 = new ChromiumWebBrowser(url);
+            this.Invoke((MethodInvoker)delegate ()
+            {
+                this.metroTabPage2.Controls.Clear();
+                this.metroTabPage2.Controls.Add(chromeBrowser2);
+            });
+            chromeBrowser2.Dock = DockStyle.Fill;
+        }
+        private void life_popup_request(string obj)
+        {
+            //function for open pop up in a new browser
+            this.carregar_popup_new_browser(obj);
         }
         //--------------FONCTION QUI GERE LES POPUP---------------------s
         void axBrowser_NewWindow(string URL, int Flags, string TargetFrameName, ref object PostData, string Headers, ref bool Processed)
