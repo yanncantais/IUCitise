@@ -32,6 +32,7 @@ namespace WindowsFormsApp4
         public NpgsqlDataReader dr;
         bool scrolled = false;
         int first = 1;
+        int semestre = 0;
         Thread chatThread;
         bool sound = true;
         bool vis = true;
@@ -287,7 +288,7 @@ namespace WindowsFormsApp4
 
             //On affiche moyennes sur le datagrid
             NpgsqlDataAdapter da = new NpgsqlDataAdapter();
-            da = getOnlineMark(con);
+            da = getOnlineMark(con, semestre);
             DataSet ds = new DataSet();
             da.Fill(ds, "moyennes");
             foreach (DataRow myRow in ds.Tables[0].Rows)
@@ -325,26 +326,30 @@ namespace WindowsFormsApp4
 
         private void radioButtons_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioS1.Checked == true)
+            if (radioS1.Checked)
             {
+                semestre = 1;
                 string[] matière = new string[13] { "Mathématiques", "Mécanique du point", "Optique géométrique", "SE1", "ENER1", "INFO1", "SIN1", "Anglais", "LV2", "Communication", "ATC", "Projet scientifique", "ER1" };
                 comboBox1.Items.Clear();
                 comboBox1.Items.AddRange(matière);
             }
-            else if (radioS2.Checked == true)
+            else if (radioS2.Checked)
             {
+                semestre = 2;
                 string[] matière = new string[12] { "Mathématiques", "Électrostatique", "Magnétostatique", "SE2", "ENER2", "INFO2", "AUTO2", "Anglais", "LV2", "Communication", "Projet de physique", "ER2" };
                 comboBox1.Items.Clear();
                 comboBox1.Items.AddRange(matière);
             }
-            else if (radioS3.Checked == true)
+            else if (radioS3.Checked)
             {
+                semestre = 3;
                 string[] matière = new string[14] { "Mathématiques", "Induction", "Ondes et propagation", "SE3", "ENER3", "POO", "AUTO3", "AT33", "RES3", "Capteurs & Vision", "Anglais", "LV2", "Entreprises et communication", "Projet TIPE" };
                 comboBox1.Items.Clear();
                 comboBox1.Items.AddRange(matière);
             }
-            else if (radioS4.Checked == true)
+            else if (radioS4.Checked)
             {
+                semestre = 4;
                 string[] matière = new string[12] { "Mathématiques", "Interférences", "Thermodynamique", "OS25", "AT41", "RCP30", "RCP20", "Anglais","ER4","C#", "Connaissance des entreprises", "Stage" };
                 comboBox1.Items.Clear();
                 comboBox1.Items.AddRange(matière);
@@ -496,7 +501,7 @@ namespace WindowsFormsApp4
                     setOnlineMark(con, comboBox1.Text, note, coef, identifiantnote);
                     comboBox2.Items.Add(identifiantnote);
                     NpgsqlDataAdapter da = new NpgsqlDataAdapter();
-                    da = getOnlineMark(con);
+                    da = getOnlineMark(con, semestre);
                     DataSet ds = new DataSet();
                     da.Fill(ds, "moyennes");
                     dataGridView1.DataSource = ds;
@@ -519,7 +524,7 @@ namespace WindowsFormsApp4
             deleteOnlineMark(con, Convert.ToInt32(comboBox2.Text));
             comboBox2.Items.Remove(comboBox2.Text);
             NpgsqlDataAdapter da = new NpgsqlDataAdapter();
-            da = getOnlineMark(con);
+            da = getOnlineMark(con, semestre);
             DataSet ds = new DataSet();
             da.Fill(ds, "moyennes");
             dataGridView1.DataSource = ds;
@@ -544,7 +549,7 @@ namespace WindowsFormsApp4
         }
         void refreshRadarGraph()
         {
-            double moyenneth = calcMoyenneBlocTh(con);
+            double moyenneth = calcMoyenneBlocTh(con, semestre);
             double moyenneiut = calcMoyenneBlocIUT(con);
             double moyennecom = calcMoyenneBlocCom(con);
             double moyenneprojet = calcMoyenneBlocProjet(con);
@@ -571,19 +576,19 @@ namespace WindowsFormsApp4
                 if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() != "")
                 {
                     dataGridView1.Rows[rowIndex].DefaultCellStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12, FontStyle.Bold);
-                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Maths") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Thermodynamique") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Interférences"))
+                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Mathématiques") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Thermodynamique") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Interférences") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Induction") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Ondes et propagation") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Électrostatique") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Magnétostatique") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Mécanique du point") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Optique géométrique"))
                     {
                         dataGridView1.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.DarkGreen;
                     }
-                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Anglais") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Communication"))
+                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Anglais") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Communication") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("LV2") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Entreprises et communication") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Connaissance des entreprises") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("ATC"))
                     {
                         dataGridView1.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.DarkOrange;
                     }
-                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("RCP30") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("RCP20") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("AT41") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("OS25"))
+                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("RCP") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("AT") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("ENER") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("OS25") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("AUTO") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("INFO") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("POO") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("SE") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("SIN"))
                     {
                         dataGridView1.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.DarkBlue;
                     }
-                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("ER4") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("C#"))
+                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("ER") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("C#") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Projet"))
                     {
                         dataGridView1.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.DarkRed;
                     }
@@ -785,7 +790,7 @@ namespace WindowsFormsApp4
         }
         void refreshMoyennG()
         {
-            double moyenneth = calcMoyenneBlocTh(con);
+            double moyenneth = calcMoyenneBlocTh(con, semestre);
             double moyenneiut = calcMoyenneBlocIUT(con);
             double moyennecom = calcMoyenneBlocCom(con);
             double moyenneprojet = calcMoyenneBlocProjet(con);
@@ -852,7 +857,7 @@ namespace WindowsFormsApp4
             {
                 deleteAllOnlineMark(con);
                 NpgsqlDataAdapter da = new NpgsqlDataAdapter();
-                da = getOnlineMark(con);
+                da = getOnlineMark(con, semestre);
                 DataSet ds = new DataSet();
                 da.Fill(ds, "moyennes");
                 dataGridView1.DataSource = ds;

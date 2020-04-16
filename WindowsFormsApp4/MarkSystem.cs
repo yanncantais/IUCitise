@@ -91,24 +91,77 @@ namespace WindowsFormsApp4
         /// <summary>
         /// Retourn un DataAdapter contenant les données du relevé de notes.
         /// </summary>
-        public static NpgsqlDataAdapter getOnlineMark(NpgsqlConnection con)
+        public static NpgsqlDataAdapter getOnlineMark(NpgsqlConnection con, int semestre)
         {
             NpgsqlDataAdapter da = null;
             try
             {
                 con.Close();
                 con.Open();
-                buildBulletin(con, "Maths");
-                buildBulletin(con, "Thermodynamique");
-                buildBulletin(con, "Interférences");
-                buildBulletin(con, "Anglais");
-                buildBulletin(con, "Communication");
-                buildBulletin(con, "ER4");
-                buildBulletin(con, "C#");
-                buildBulletin(con, "AT41");
-                buildBulletin(con, "RCP20");
-                buildBulletin(con, "RCP30");
-                buildBulletin(con, "OS25");
+                if (semestre == 1)
+                {
+                    buildBulletin(con, "Mathématiques");
+                    buildBulletin(con, "Mécanique du point");
+                    buildBulletin(con, "Optique géométrique");
+                    buildBulletin(con, "Anglais");
+                    buildBulletin(con, "LV2");
+                    buildBulletin(con, "Communication");
+                    buildBulletin(con, "Projet scientifique");
+                    buildBulletin(con, "ATC");
+                    buildBulletin(con, "ER1");
+                    buildBulletin(con, "SE1");
+                    buildBulletin(con, "ENER1");
+                    buildBulletin(con, "INFO1");
+                    buildBulletin(con, "SIN1");
+                }
+                else if (semestre == 2)
+                {
+                    buildBulletin(con, "Mathématiques");
+                    buildBulletin(con, "Électrostatique");
+                    buildBulletin(con, "Magnétostatique");
+                    buildBulletin(con, "Anglais");
+                    buildBulletin(con, "LV2");
+                    buildBulletin(con, "Communication");
+                    buildBulletin(con, "Projet de physique");
+                    buildBulletin(con, "ER2");
+                    buildBulletin(con, "SE2");
+                    buildBulletin(con, "ENER2");
+                    buildBulletin(con, "INFO2");
+                    buildBulletin(con, "AUTO2");
+                }
+                else if (semestre == 3)
+                {
+                    buildBulletin(con, "Mathématiques");
+                    buildBulletin(con, "Induction");
+                    buildBulletin(con, "Ondes et propagation");
+                    buildBulletin(con, "Anglais");
+                    buildBulletin(con, "LV2");
+                    buildBulletin(con, "Entreprises et communication");
+                    buildBulletin(con, "Projet TIPE");
+                    buildBulletin(con, "SE3");
+                    buildBulletin(con, "ENER3");
+                    buildBulletin(con, "POO");
+                    buildBulletin(con, "AUTO3");
+                    buildBulletin(con, "AT33");
+                    buildBulletin(con, "RES3");
+                    buildBulletin(con, "Capteurs & Vision");
+                }
+                else if (semestre == 4)
+                {
+                    buildBulletin(con, "Mathématiques");
+                    buildBulletin(con, "Thermodynamique");
+                    buildBulletin(con, "Interférences");
+                    buildBulletin(con, "Anglais");
+                    buildBulletin(con, "Connaissance des entreprises");
+                    buildBulletin(con, "ER4");
+                    buildBulletin(con, "C#");
+                    buildBulletin(con, "AT41");
+                    buildBulletin(con, "RCP20");
+                    buildBulletin(con, "RCP30");
+                    buildBulletin(con, "OS25");
+                    buildBulletin(con, "Stage");
+                }
+
                 da = new NpgsqlDataAdapter("select * from moyennes ", con);
 
                 con.Close();
@@ -160,28 +213,56 @@ namespace WindowsFormsApp4
         /// <summary>
         /// Renvoie la moyenne générale du bloc théorique.
         /// </summary>
-        public static double calcMoyenneBlocTh(NpgsqlConnection con)
+        public static double calcMoyenneBlocTh(NpgsqlConnection con, int semestre)
         {
-            double moyenne, math, inter, thermo, coefmath, coefinter, coefthermo;
-            math = getMoyenne(con, "Maths");
-            inter = getMoyenne(con, "Interférences");
-            thermo = getMoyenne(con, "Thermodynamique");
-            coefmath = 0.53;
-            coefthermo = 0.17;
-            coefinter = 0.30;
+            double moyenne = 0,math = 0, inter = 0, thermo = 0, coefmath = 0, coefinter = 0, coefthermo = 0;
+            math = getMoyenne(con, "Mathématiques");
+
+            if (semestre == 1)
+            {
+                inter = getMoyenne(con, "Mécanique du point");
+                thermo = getMoyenne(con, "Optique géométrique");
+                coefmath = 0.51;
+                coefthermo = 0.24;
+                coefinter = 0.25;
+            }
+            else if (semestre == 2)
+            {
+                inter = getMoyenne(con, "Électrostatique");
+                thermo = getMoyenne(con, "Magnétostatique");
+                coefmath = 0.48;
+                coefthermo = 0.26;
+                coefinter = 0.26;
+            }
+            else if (semestre == 3)
+            {
+                inter = getMoyenne(con, "Induction");
+                thermo = getMoyenne(con, "Ondes et propagation");
+                coefmath = 0.6;
+                coefthermo = 0.22;
+                coefinter = 0.18;
+            }
+            else if (semestre == 4)
+            {
+                inter = getMoyenne(con, "Interférences");
+                thermo = getMoyenne(con, "Thermodynamique");
+                coefmath = 0.53;
+                coefthermo = 0.17;
+                coefinter = 0.30;
+            }
             if (math == 0)
             {
                 coefmath = 0;
             }
-            if(inter == 0)
+            if (inter == 0)
             {
                 coefinter = 0;
             }
-            if(thermo == 0)
+            if (thermo == 0)
             {
                 coefthermo = 0;
             }
-            if(math == 0 && inter == 0 && thermo == 0)
+            if (math == 0 && inter == 0 && thermo == 0)
             {
                 moyenne = 0;
             }
