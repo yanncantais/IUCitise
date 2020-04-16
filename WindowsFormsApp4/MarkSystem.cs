@@ -94,74 +94,80 @@ namespace WindowsFormsApp4
         public static NpgsqlDataAdapter getOnlineMark(NpgsqlConnection con, int semestre)
         {
             NpgsqlDataAdapter da = null;
+            con.Close();
+            con.Open();
+            NpgsqlCommand cmd = new NpgsqlCommand("delete from moyennes", con);
+            cmd.ExecuteNonQuery();
             try
             {
                 con.Close();
                 con.Open();
-                if (semestre == 1)
+                if (semestre != 0)
                 {
-                    buildBulletin(con, "Mathématiques");
-                    buildBulletin(con, "Mécanique du point");
-                    buildBulletin(con, "Optique géométrique");
-                    buildBulletin(con, "Anglais");
-                    buildBulletin(con, "LV2");
-                    buildBulletin(con, "Communication");
-                    buildBulletin(con, "Projet scientifique");
-                    buildBulletin(con, "ATC");
-                    buildBulletin(con, "ER1");
-                    buildBulletin(con, "SE1");
-                    buildBulletin(con, "ENER1");
-                    buildBulletin(con, "INFO1");
-                    buildBulletin(con, "SIN1");
+                    if (semestre == 1)
+                    {
+                        buildBulletin(con, "Mathématiques");
+                        buildBulletin(con, "Mécanique du point");
+                        buildBulletin(con, "Optique géométrique");
+                        buildBulletin(con, "Anglais");
+                        buildBulletin(con, "LV2");
+                        buildBulletin(con, "Communication");
+                        buildBulletin(con, "Projet scientifique");
+                        buildBulletin(con, "ATC");
+                        buildBulletin(con, "ER1");
+                        buildBulletin(con, "SE1");
+                        buildBulletin(con, "ENER1");
+                        buildBulletin(con, "INFO1");
+                        buildBulletin(con, "SIN1");
+                    }
+                    else if (semestre == 2)
+                    {
+                        buildBulletin(con, "Mathématiques");
+                        buildBulletin(con, "Électrostatique");
+                        buildBulletin(con, "Magnétostatique");
+                        buildBulletin(con, "Anglais");
+                        buildBulletin(con, "LV2");
+                        buildBulletin(con, "Communication");
+                        buildBulletin(con, "Projet de physique");
+                        buildBulletin(con, "ER2");
+                        buildBulletin(con, "SE2");
+                        buildBulletin(con, "ENER2");
+                        buildBulletin(con, "INFO2");
+                        buildBulletin(con, "AUTO2");
+                    }
+                    else if (semestre == 3)
+                    {
+                        buildBulletin(con, "Mathématiques");
+                        buildBulletin(con, "Induction");
+                        buildBulletin(con, "Ondes et propagation");
+                        buildBulletin(con, "Anglais");
+                        buildBulletin(con, "LV2");
+                        buildBulletin(con, "Entreprises et communication");
+                        buildBulletin(con, "Projet TIPE");
+                        buildBulletin(con, "SE3");
+                        buildBulletin(con, "ENER3");
+                        buildBulletin(con, "POO");
+                        buildBulletin(con, "AUTO3");
+                        buildBulletin(con, "AT33");
+                        buildBulletin(con, "RES3");
+                        buildBulletin(con, "Capteurs & Vision");
+                    }
+                    else if (semestre == 4)
+                    {
+                        buildBulletin(con, "Mathématiques");
+                        buildBulletin(con, "Thermodynamique");
+                        buildBulletin(con, "Interférences");
+                        buildBulletin(con, "Anglais");
+                        buildBulletin(con, "Connaissance des entreprises");
+                        buildBulletin(con, "ER4");
+                        buildBulletin(con, "C#");
+                        buildBulletin(con, "AT41");
+                        buildBulletin(con, "RCP20");
+                        buildBulletin(con, "RCP30");
+                        buildBulletin(con, "OS25");
+                        buildBulletin(con, "Stage");
+                    }
                 }
-                else if (semestre == 2)
-                {
-                    buildBulletin(con, "Mathématiques");
-                    buildBulletin(con, "Électrostatique");
-                    buildBulletin(con, "Magnétostatique");
-                    buildBulletin(con, "Anglais");
-                    buildBulletin(con, "LV2");
-                    buildBulletin(con, "Communication");
-                    buildBulletin(con, "Projet de physique");
-                    buildBulletin(con, "ER2");
-                    buildBulletin(con, "SE2");
-                    buildBulletin(con, "ENER2");
-                    buildBulletin(con, "INFO2");
-                    buildBulletin(con, "AUTO2");
-                }
-                else if (semestre == 3)
-                {
-                    buildBulletin(con, "Mathématiques");
-                    buildBulletin(con, "Induction");
-                    buildBulletin(con, "Ondes et propagation");
-                    buildBulletin(con, "Anglais");
-                    buildBulletin(con, "LV2");
-                    buildBulletin(con, "Entreprises et communication");
-                    buildBulletin(con, "Projet TIPE");
-                    buildBulletin(con, "SE3");
-                    buildBulletin(con, "ENER3");
-                    buildBulletin(con, "POO");
-                    buildBulletin(con, "AUTO3");
-                    buildBulletin(con, "AT33");
-                    buildBulletin(con, "RES3");
-                    buildBulletin(con, "Capteurs & Vision");
-                }
-                else if (semestre == 4)
-                {
-                    buildBulletin(con, "Mathématiques");
-                    buildBulletin(con, "Thermodynamique");
-                    buildBulletin(con, "Interférences");
-                    buildBulletin(con, "Anglais");
-                    buildBulletin(con, "Connaissance des entreprises");
-                    buildBulletin(con, "ER4");
-                    buildBulletin(con, "C#");
-                    buildBulletin(con, "AT41");
-                    buildBulletin(con, "RCP20");
-                    buildBulletin(con, "RCP30");
-                    buildBulletin(con, "OS25");
-                    buildBulletin(con, "Stage");
-                }
-
                 da = new NpgsqlDataAdapter("select * from moyennes ", con);
 
                 con.Close();
@@ -308,9 +314,9 @@ namespace WindowsFormsApp4
                 at41 = getMoyenne(con, "ENER3");
                 rcp20 = getMoyenne(con, "AUTO3");
                 rcp30 = getMoyenne(con, "POO");
-                mat1 = getMoyenne(con, "RCP20");
+                mat1 = getMoyenne(con, "RES3");
                 mat2 = getMoyenne(con, "AT33");
-                mat2 = getMoyenne(con, "Capteurs & Vision");
+                mat3 = getMoyenne(con, "Capteurs & Vision");
                 coefos25 = 0.14;
                 coefat41 = 0.14;
                 coefrcp20 = 0.14;
@@ -463,7 +469,7 @@ namespace WindowsFormsApp4
             else if (semestre == 3)
             {
                 er4 = getMoyenne(con, "Projet TIPE");
-                coefc = 1;
+                coefer4 = 1;
             }
             else if (semestre == 4)
             {

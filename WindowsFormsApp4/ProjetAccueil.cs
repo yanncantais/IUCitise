@@ -354,6 +354,32 @@ namespace WindowsFormsApp4
                 comboBox1.Items.Clear();
                 comboBox1.Items.AddRange(matière);
             }
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter();
+            da = getOnlineMark(con, semestre);
+            DataSet ds = new DataSet();
+            da.Fill(ds, "moyennes");
+            foreach (DataRow myRow in ds.Tables[0].Rows)
+            {
+                if (myRow["id"].ToString() != "")
+                {
+                    comboBox2.Items.Add(myRow["id"].ToString());
+                }
+                if (myRow["note"].ToString() != "")
+                {
+                    myRow["note"] = Math.Round(Convert.ToDouble(myRow["note"]), 2).ToString();
+                }
+            }
+            dataGridView1.DataSource = ds;
+            dataGridView1.DataMember = "moyennes";
+            dataGridView1.Columns["id"].Width = 30;
+            dataGridView1.Columns["coefficient"].Width = 80;
+            dataGridView1.Columns["matière"].Width = 148;
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            refreshRadarGraph();
+            refreshMoyennG();
         }
 
         //------------------------EMPECHE L'UTILISATEUR DE REDIMENSIONNER LA COLONNE DES LISTVIEW-------------
@@ -584,11 +610,11 @@ namespace WindowsFormsApp4
                     {
                         dataGridView1.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.DarkOrange;
                     }
-                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("RCP") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("AT") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("ENER") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("OS25") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("AUTO") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("INFO") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("POO") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("SE") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("SIN"))
+                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("RCP") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("AT") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Capteurs") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("ENER") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("OS25") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("AUTO") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("INFO") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("POO") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("SE") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("SIN") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("RES"))
                     {
                         dataGridView1.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.DarkBlue;
                     }
-                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("ER") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("C#") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Projet"))
+                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() =="ER1" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() == "ER2" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() == "ER3" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() == "ER4" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("C#") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Projet"))
                     {
                         dataGridView1.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.DarkRed;
                     }
@@ -687,25 +713,25 @@ namespace WindowsFormsApp4
                                 {
                                     lastline = 1;
                                 }
-                                if (content.Contains("Mathématiques") || content.Contains("Thermodynamique") || content.Contains("Interférences"))
+                                if (content.Contains("Mathématiques") || content.Contains("Thermodynamique") || content.Contains("Interférences") || content.Contains("Mécanique du point") || content.Contains("Optique géométrique") || content.Contains("Électrostatique") || content.Contains("Magnétostatique") || content.Contains("Induction") || content.Contains("Ondes et propagation"))
                                 {
                                     style = iTextSharp.text.Font.BOLD;
                                     color = new BaseColor(0, 100, 0);
                                     headermatiere = 1;
                                 }
-                                if (content.Contains("Anglais") || content.Contains("Communication"))
+                                if (content.Contains("Anglais") || content.Contains("Communication") || content.Contains("Entreprises") || content.Contains("LV2"))
                                 {
                                     style = iTextSharp.text.Font.BOLD;
                                     color = new BaseColor(255, 127, 0);
                                     headermatiere = 1;
                                 }
-                                if (content.Contains("ER4") || content.Contains("C#"))
+                                if (content == "ER4" || content == "ER3" || content == "ER2" || content == "ER1" || content.Contains("C#") || content.Contains("Projet"))
                                 {
                                     style = iTextSharp.text.Font.BOLD;
                                     color = new BaseColor(139, 0, 0);
                                     headermatiere = 1;
                                 }
-                                if (content.Contains("AT41") || content.Contains("RCP20") || content.Contains("RCP30") || content.Contains("OS25"))
+                                if (content.Contains("AT") || content.Contains("RCP") || content.Contains("SE") || content.Contains("RES") || content.Contains("OS25") || content.Contains("ENER") || content.Contains("INFO") || content.Contains("SIN") || content.Contains("AUTO") || content.Contains("POO") || content.Contains("Capteurs"))
                                 {
                                     style = iTextSharp.text.Font.BOLD;
                                     color = new BaseColor(0, 0, 139);
@@ -794,10 +820,36 @@ namespace WindowsFormsApp4
             double moyenneiut = calcMoyenneBlocIUT(con, semestre);
             double moyennecom = calcMoyenneBlocCom(con, semestre);
             double moyenneprojet = calcMoyenneBlocProjet(con, semestre);
-            int coefth = 8;
-            int coefiut = 5;
-            int coefcom = 3;
-            int coefprojet = 4;
+            double coefth = 0, coefiut = 0, coefcom = 0, coefprojet = 0, coefstage = 0;
+            double moyenneg = 0;
+            if (semestre == 1)
+            {
+                coefth = 8;
+                coefiut = 5;
+                coefcom = 3;
+                coefprojet = 4;
+            }
+            else if (semestre == 2)
+            {
+                coefth = 8;
+                coefiut = 5;
+                coefcom = 3;
+                coefprojet = 4;
+            }
+            else if (semestre == 3)
+            {
+                coefth = 11;
+                coefiut = 10;
+                coefcom = 4;
+                coefprojet = 5;
+            }
+            else if (semestre == 4)
+            {
+                coefth = 8;
+                coefiut = 5;
+                coefcom = 3;
+                coefprojet = 4;
+            }
             if (moyenneth == 0)
             {
                 coefth = 0;
@@ -814,8 +866,8 @@ namespace WindowsFormsApp4
             {
                 coefprojet = 0;
             }
-            double moyenne = (moyenneth* coefth + moyenneiut* coefiut + moyennecom* coefcom + moyenneprojet*coefprojet) / (coefprojet + coefcom + coefiut + coefth);
-            label_moyg.Text = "Moyenne générale: " + Math.Round(moyenne, 2).ToString();
+            moyenneg = (moyenneth* coefth + moyenneiut* coefiut + moyennecom* coefcom + moyenneprojet*coefprojet) / (coefprojet + coefcom + coefiut + coefth);
+            label_moyg.Text = "Moyenne générale: " + Math.Round(moyenneg, 2).ToString();
         }
         private Byte[] getChartBuffer()
         {
