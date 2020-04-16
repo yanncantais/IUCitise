@@ -287,29 +287,7 @@ namespace WindowsFormsApp4
             cmd.ExecuteNonQuery();
 
             //On affiche moyennes sur le datagrid
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter();
-            da = getOnlineMark(con, semestre);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "moyennes");
-            foreach (DataRow myRow in ds.Tables[0].Rows)
-            {
-                if (myRow["id"].ToString() != "") {
-                    comboBox2.Items.Add(myRow["id"].ToString());
-                }
-                if(myRow["note"].ToString() != "")
-                {
-                    myRow["note"] = Math.Round(Convert.ToDouble(myRow["note"]), 2).ToString();
-                }
-            }
-            dataGridView1.DataSource = ds;
-            dataGridView1.DataMember = "moyennes";
-            dataGridView1.Columns["id"].Width = 30;
-            dataGridView1.Columns["coefficient"].Width = 80;
-            dataGridView1.Columns["matière"].Width = 148;
-            foreach (DataGridViewColumn column in dataGridView1.Columns)
-            {
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
+            refreshDataGrid();
             con.Close();
 
             refreshRadarGraph();
@@ -354,30 +332,7 @@ namespace WindowsFormsApp4
                 comboBox1.Items.Clear();
                 comboBox1.Items.AddRange(matière);
             }
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter();
-            da = getOnlineMark(con, semestre);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "moyennes");
-            foreach (DataRow myRow in ds.Tables[0].Rows)
-            {
-                if (myRow["id"].ToString() != "")
-                {
-                    comboBox2.Items.Add(myRow["id"].ToString());
-                }
-                if (myRow["note"].ToString() != "")
-                {
-                    myRow["note"] = Math.Round(Convert.ToDouble(myRow["note"]), 2).ToString();
-                }
-            }
-            dataGridView1.DataSource = ds;
-            dataGridView1.DataMember = "moyennes";
-            dataGridView1.Columns["id"].Width = 30;
-            dataGridView1.Columns["coefficient"].Width = 80;
-            dataGridView1.Columns["matière"].Width = 148;
-            foreach (DataGridViewColumn column in dataGridView1.Columns)
-            {
-                column.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
+            refreshDataGrid();
             refreshRadarGraph();
             refreshMoyennG();
         }
@@ -621,6 +576,34 @@ namespace WindowsFormsApp4
                 }
             }
         }
+        void refreshDataGrid()
+        {
+            NpgsqlDataAdapter da = new NpgsqlDataAdapter();
+            da = getOnlineMark(con, semestre);
+            DataSet ds = new DataSet();
+            da.Fill(ds, "moyennes");
+            comboBox2.Items.Clear();
+            foreach (DataRow myRow in ds.Tables[0].Rows)
+            {
+                if (myRow["id"].ToString() != "")
+                {
+                    comboBox2.Items.Add(myRow["id"].ToString());
+                }
+                if (myRow["note"].ToString() != "")
+                {
+                    myRow["note"] = Math.Round(Convert.ToDouble(myRow["note"]), 2).ToString();
+                }
+            }
+            dataGridView1.DataSource = ds;
+            dataGridView1.DataMember = "moyennes";
+            dataGridView1.Columns["id"].Width = 30;
+            dataGridView1.Columns["coefficient"].Width = 80;
+            dataGridView1.Columns["matière"].Width = 148;
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+        }
         void drawDatagrid()
         {
             //design du datagrid
@@ -820,21 +803,22 @@ namespace WindowsFormsApp4
             double moyenneiut = calcMoyenneBlocIUT(con, semestre);
             double moyennecom = calcMoyenneBlocCom(con, semestre);
             double moyenneprojet = calcMoyenneBlocProjet(con, semestre);
+            double moyennestage = getMoyenne(con, "Stage");
             double coefth = 0, coefiut = 0, coefcom = 0, coefprojet = 0, coefstage = 0;
             double moyenneg = 0;
             if (semestre == 1)
             {
-                coefth = 8;
-                coefiut = 5;
-                coefcom = 3;
+                coefth = 10;
+                coefiut = 11;
+                coefcom = 5;
                 coefprojet = 4;
             }
             else if (semestre == 2)
             {
-                coefth = 8;
-                coefiut = 5;
+                coefth = 12;
+                coefiut = 10;
                 coefcom = 3;
-                coefprojet = 4;
+                coefprojet = 5;
             }
             else if (semestre == 3)
             {
@@ -849,6 +833,7 @@ namespace WindowsFormsApp4
                 coefiut = 5;
                 coefcom = 3;
                 coefprojet = 4;
+                coefstage = 10;
             }
             if (moyenneth == 0)
             {
@@ -866,7 +851,11 @@ namespace WindowsFormsApp4
             {
                 coefprojet = 0;
             }
-            moyenneg = (moyenneth* coefth + moyenneiut* coefiut + moyennecom* coefcom + moyenneprojet*coefprojet) / (coefprojet + coefcom + coefiut + coefth);
+            if (moyennestage == 0)
+            {
+                coefstage = 0;
+            }
+            moyenneg = (moyenneth* coefth + moyenneiut* coefiut + moyennecom* coefcom + moyenneprojet*coefprojet +moyennestage*coefstage) / (coefprojet + coefcom + coefiut + coefth + coefstage);
             label_moyg.Text = "Moyenne générale: " + Math.Round(moyenneg, 2).ToString();
         }
         private Byte[] getChartBuffer()

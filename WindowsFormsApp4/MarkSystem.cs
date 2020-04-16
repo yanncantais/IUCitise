@@ -106,11 +106,11 @@ namespace WindowsFormsApp4
                 {
                     if (semestre == 1)
                     {
-                        buildBulletin(con, "Mathématiques");
+                        buildBulletin(con, "Mathématiques 1");
                         buildBulletin(con, "Mécanique du point");
                         buildBulletin(con, "Optique géométrique");
-                        buildBulletin(con, "Anglais");
-                        buildBulletin(con, "LV2");
+                        buildBulletin(con, "Anglais 1");
+                        buildBulletin(con, "LV2 1");
                         buildBulletin(con, "Communication");
                         buildBulletin(con, "Projet scientifique");
                         buildBulletin(con, "ATC");
@@ -122,11 +122,11 @@ namespace WindowsFormsApp4
                     }
                     else if (semestre == 2)
                     {
-                        buildBulletin(con, "Mathématiques");
+                        buildBulletin(con, "Mathématiques 2");
                         buildBulletin(con, "Électrostatique");
                         buildBulletin(con, "Magnétostatique");
-                        buildBulletin(con, "Anglais");
-                        buildBulletin(con, "LV2");
+                        buildBulletin(con, "Anglais 2");
+                        buildBulletin(con, "LV2 2");
                         buildBulletin(con, "Communication");
                         buildBulletin(con, "Projet de physique");
                         buildBulletin(con, "ER2");
@@ -137,11 +137,11 @@ namespace WindowsFormsApp4
                     }
                     else if (semestre == 3)
                     {
-                        buildBulletin(con, "Mathématiques");
+                        buildBulletin(con, "Mathématiques 3");
                         buildBulletin(con, "Induction");
                         buildBulletin(con, "Ondes et propagation");
-                        buildBulletin(con, "Anglais");
-                        buildBulletin(con, "LV2");
+                        buildBulletin(con, "Anglais 3");
+                        buildBulletin(con, "LV2 3");
                         buildBulletin(con, "Entreprises et communication");
                         buildBulletin(con, "Projet TIPE");
                         buildBulletin(con, "SE3");
@@ -154,10 +154,10 @@ namespace WindowsFormsApp4
                     }
                     else if (semestre == 4)
                     {
-                        buildBulletin(con, "Mathématiques");
+                        buildBulletin(con, "Mathématiques 4");
                         buildBulletin(con, "Thermodynamique");
                         buildBulletin(con, "Interférences");
-                        buildBulletin(con, "Anglais");
+                        buildBulletin(con, "Anglais 4");
                         buildBulletin(con, "Connaissance des entreprises");
                         buildBulletin(con, "ER4");
                         buildBulletin(con, "C#");
@@ -222,10 +222,10 @@ namespace WindowsFormsApp4
         public static double calcMoyenneBlocTh(NpgsqlConnection con, int semestre)
         {
             double moyenne = 0,math = 0, inter = 0, thermo = 0, coefmath = 0, coefinter = 0, coefthermo = 0;
-            math = getMoyenne(con, "Mathématiques");
 
             if (semestre == 1)
             {
+                math = getMoyenne(con, "Mathématiques 1");
                 inter = getMoyenne(con, "Mécanique du point");
                 thermo = getMoyenne(con, "Optique géométrique");
                 coefmath = 0.51;
@@ -234,6 +234,7 @@ namespace WindowsFormsApp4
             }
             else if (semestre == 2)
             {
+                math = getMoyenne(con, "Mathématiques 2");
                 inter = getMoyenne(con, "Électrostatique");
                 thermo = getMoyenne(con, "Magnétostatique");
                 coefmath = 0.48;
@@ -242,6 +243,7 @@ namespace WindowsFormsApp4
             }
             else if (semestre == 3)
             {
+                math = getMoyenne(con, "Mathématiques 3");
                 inter = getMoyenne(con, "Induction");
                 thermo = getMoyenne(con, "Ondes et propagation");
                 coefmath = 0.6;
@@ -250,6 +252,7 @@ namespace WindowsFormsApp4
             }
             else if (semestre == 4)
             {
+                math = getMoyenne(con, "Mathématiques 4");
                 inter = getMoyenne(con, "Interférences");
                 thermo = getMoyenne(con, "Thermodynamique");
                 coefmath = 0.53;
@@ -384,9 +387,9 @@ namespace WindowsFormsApp4
 
             if (semestre == 1)
             {
-                anglais = getMoyenne(con, "Anglais");
+                anglais = getMoyenne(con, "Anglais 1");
                 com = getMoyenne(con, "Communication");
-                com3 = getMoyenne(con, "LV2");
+                com3 = getMoyenne(con, "LV2 1");
                 com4 = getMoyenne(con, "ATC");
                 coefanglais = 0.42;
                 coefcom = 0.18;
@@ -395,25 +398,25 @@ namespace WindowsFormsApp4
             }
             else if (semestre == 2)
             {
-                anglais = getMoyenne(con, "Anglais");
+                anglais = getMoyenne(con, "Anglais 2");
                 com = getMoyenne(con, "Communication");
-                com3 = getMoyenne(con, "LV2");
+                com3 = getMoyenne(con, "LV2 2");
                 coefanglais = 0.5;
                 coefcom = 0.25;
                 coefcom3 = 0.25;
             }
             else if (semestre == 3)
             {
-                anglais = getMoyenne(con, "Anglais");
+                anglais = getMoyenne(con, "Anglais 3");
                 com = getMoyenne(con, "Entreprises et communication");
-                com3 = getMoyenne(con, "LV2");
+                com3 = getMoyenne(con, "LV2 3");
                 coefanglais = 0.5;
                 coefcom = 0.25;
                 coefcom3 = 0.25;
             }
             else if (semestre == 4)
             {
-                anglais = getMoyenne(con, "Anglais");
+                anglais = getMoyenne(con, "Anglais 4");
                 com = getMoyenne(con, "Connaissance des entreprises");
                 coefanglais = 0.67;
                 coefcom = 0.33;
