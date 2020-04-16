@@ -550,9 +550,9 @@ namespace WindowsFormsApp4
         void refreshRadarGraph()
         {
             double moyenneth = calcMoyenneBlocTh(con, semestre);
-            double moyenneiut = calcMoyenneBlocIUT(con);
-            double moyennecom = calcMoyenneBlocCom(con);
-            double moyenneprojet = calcMoyenneBlocProjet(con);
+            double moyenneiut = calcMoyenneBlocIUT(con, semestre);
+            double moyennecom = calcMoyenneBlocCom(con, semestre);
+            double moyenneprojet = calcMoyenneBlocProjet(con, semestre);
             chart2.Series[0].Points.Clear();
             chart2.Series[0].Points.AddY(moyenneth);
             chart2.Series[0].Points.AddY(moyenneiut);
@@ -687,7 +687,7 @@ namespace WindowsFormsApp4
                                 {
                                     lastline = 1;
                                 }
-                                if (content.Contains("Maths") || content.Contains("Thermodynamique") || content.Contains("Interférences"))
+                                if (content.Contains("Mathématiques") || content.Contains("Thermodynamique") || content.Contains("Interférences"))
                                 {
                                     style = iTextSharp.text.Font.BOLD;
                                     color = new BaseColor(0, 100, 0);
@@ -791,9 +791,9 @@ namespace WindowsFormsApp4
         void refreshMoyennG()
         {
             double moyenneth = calcMoyenneBlocTh(con, semestre);
-            double moyenneiut = calcMoyenneBlocIUT(con);
-            double moyennecom = calcMoyenneBlocCom(con);
-            double moyenneprojet = calcMoyenneBlocProjet(con);
+            double moyenneiut = calcMoyenneBlocIUT(con, semestre);
+            double moyennecom = calcMoyenneBlocCom(con, semestre);
+            double moyenneprojet = calcMoyenneBlocProjet(con, semestre);
             int coefth = 8;
             int coefiut = 5;
             int coefcom = 3;

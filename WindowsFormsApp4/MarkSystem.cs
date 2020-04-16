@@ -276,17 +276,60 @@ namespace WindowsFormsApp4
         /// <summary>
         /// Renvoie la moyenne générale du bloc IUT.
         /// </summary>
-        public static double calcMoyenneBlocIUT(NpgsqlConnection con)
+        public static double calcMoyenneBlocIUT(NpgsqlConnection con, int semestre)
         {
-            double moyenne, os25, at41, rcp20, rcp30, coefos25, coefat41, coefrcp20, coefrcp30;
-            os25 = getMoyenne(con, "OS25");
-            at41 = getMoyenne(con, "AT41");
-            rcp20 = getMoyenne(con, "RCP20");
-            rcp30 = getMoyenne(con, "RCP30");
-            coefos25 = 0.23;
-            coefat41 = 0.27;
-            coefrcp20 = 0.24;
-            coefrcp30 = 0.26;
+            double moyenne = 0, os25 = 0, at41 = 0, rcp20 = 0, rcp30 = 0, coefos25 = 0, coefat41 = 0, coefrcp20 = 0, coefrcp30 = 0, mat1 = 0, mat2=0, mat3=0, coef1 = 0, coef2 = 0, coef3 = 0;
+
+            if (semestre == 1)
+            {
+                os25 = getMoyenne(con, "SE1");
+                at41 = getMoyenne(con, "ENER1");
+                rcp20 = getMoyenne(con, "INFO1");
+                rcp30 = getMoyenne(con, "SIN1");
+                coefos25 = 0.33;
+                coefat41 = 0.2;
+                coefrcp20 = 0.28;
+                coefrcp30 = 0.19;
+            }
+            else if (semestre == 2)
+            {
+                os25 = getMoyenne(con, "SE2");
+                at41 = getMoyenne(con, "ENER2");
+                rcp20 = getMoyenne(con, "INFO2");
+                rcp30 = getMoyenne(con, "AUTO2");
+                coefos25 = 0.3;
+                coefat41 = 0.22;
+                coefrcp20 = 0.23;
+                coefrcp30 = 0.25;
+            }
+            else if (semestre == 3)
+            {
+                os25 = getMoyenne(con, "SE3");
+                at41 = getMoyenne(con, "ENER3");
+                rcp20 = getMoyenne(con, "AUTO3");
+                rcp30 = getMoyenne(con, "POO");
+                mat1 = getMoyenne(con, "RCP20");
+                mat2 = getMoyenne(con, "AT33");
+                mat2 = getMoyenne(con, "Capteurs & Vision");
+                coefos25 = 0.14;
+                coefat41 = 0.14;
+                coefrcp20 = 0.14;
+                coefrcp30 = 0.14;
+                coef1 = 0.16;
+                coef2 = 0.14;
+                coef3 = 0.14;
+            }
+            else if (semestre == 4)
+            {
+                os25 = getMoyenne(con, "OS25");
+                at41 = getMoyenne(con, "AT41");
+                rcp20 = getMoyenne(con, "RCP20");
+                rcp30 = getMoyenne(con, "RCP30");
+                coefos25 = 0.23;
+                coefat41 = 0.27;
+                coefrcp20 = 0.24;
+                coefrcp30 = 0.26;
+            }
             if (os25 == 0)
             {
                 coefos25 = 0;
@@ -303,13 +346,25 @@ namespace WindowsFormsApp4
             {
                 coefrcp30 = 0;
             }
-            if (os25 == 0 && at41 == 0 && rcp30 == 0 && rcp20  == 0)
+            if (mat1 == 0)
+            {
+                coef1 = 0;
+            }
+            if (mat2 == 0)
+            {
+                coef2 = 0;
+            }
+            if (mat3 == 0)
+            {
+                coef3 = 0;
+            }
+            if (os25 == 0 && at41 == 0 && rcp30 == 0 && rcp20  == 0 && mat1 == 0 && mat2 == 0 && mat3 == 0)
             {
                 moyenne = 0;
             }
             else
             {
-                moyenne = (os25 * coefos25 + at41 * coefat41 + rcp20 * coefrcp20 + rcp30*coefrcp30) / (coefos25 + coefat41 + coefrcp20 + coefrcp30);
+                moyenne = (os25 * coefos25 + at41 * coefat41 + rcp20 * coefrcp20 + rcp30*coefrcp30 + mat1*coef1 + mat2*coef2 + mat3*coef3) / (coefos25 + coefat41 + coefrcp20 + coefrcp30 + coef1 + coef2 + coef3);
             }
             moyenne = Math.Round(moyenne, 2);
             return moyenne;
@@ -317,13 +372,46 @@ namespace WindowsFormsApp4
         /// <summary>
         /// Renvoie la moyenne générale du bloc communication.
         /// </summary>
-        public static double calcMoyenneBlocCom(NpgsqlConnection con)
+        public static double calcMoyenneBlocCom(NpgsqlConnection con, int semestre)
         {
-            double moyenne, anglais, com, coefanglais, coefcom;
-            anglais = getMoyenne(con, "Anglais");
-            com = getMoyenne(con, "Communication");
-            coefanglais = 0.67;
-            coefcom = 0.33;
+            double moyenne = 0, anglais = 0, com = 0, coefanglais = 0, coefcom = 0, com3 = 0, coefcom3 = 0, com4 = 0, coefcom4 = 0;
+
+            if (semestre == 1)
+            {
+                anglais = getMoyenne(con, "Anglais");
+                com = getMoyenne(con, "Communication");
+                com3 = getMoyenne(con, "LV2");
+                com4 = getMoyenne(con, "ATC");
+                coefanglais = 0.42;
+                coefcom = 0.18;
+                coefcom3 = 0.21;
+                coefcom4 = 0.19;
+            }
+            else if (semestre == 2)
+            {
+                anglais = getMoyenne(con, "Anglais");
+                com = getMoyenne(con, "Communication");
+                com3 = getMoyenne(con, "LV2");
+                coefanglais = 0.5;
+                coefcom = 0.25;
+                coefcom3 = 0.25;
+            }
+            else if (semestre == 3)
+            {
+                anglais = getMoyenne(con, "Anglais");
+                com = getMoyenne(con, "Entreprises et communication");
+                com3 = getMoyenne(con, "LV2");
+                coefanglais = 0.5;
+                coefcom = 0.25;
+                coefcom3 = 0.25;
+            }
+            else if (semestre == 4)
+            {
+                anglais = getMoyenne(con, "Anglais");
+                com = getMoyenne(con, "Connaissance des entreprises");
+                coefanglais = 0.67;
+                coefcom = 0.33;
+            }
             if (anglais == 0)
             {
                 coefanglais = 0;
@@ -332,13 +420,21 @@ namespace WindowsFormsApp4
             {
                 coefcom = 0;
             }
-            if (anglais == 0 && com == 0)
+            if (com3 == 0)
+            {
+                coefcom3 = 0;
+            }
+            if (com4 == 0)
+            {
+                coefcom4 = 0;
+            }
+            if (anglais == 0 && com == 0 && com3 == 0 && com4 == 0)
             {
                 moyenne = 0;
             }
             else
             {
-                moyenne = (anglais * coefanglais + com * coefcom) / (coefanglais + coefcom);
+                moyenne = (anglais * coefanglais + com * coefcom  + com3*coefcom3 + com4*coefcom4) / (coefanglais + coefcom + coefcom3 + coefcom4);
             }
             moyenne = Math.Round(moyenne, 2);
             return moyenne;
@@ -346,13 +442,36 @@ namespace WindowsFormsApp4
         /// <summary>
         /// Renvoie la moyenne générale du bloc projet.
         /// </summary>
-        public static double calcMoyenneBlocProjet(NpgsqlConnection con)
+        public static double calcMoyenneBlocProjet(NpgsqlConnection con, int semestre)
         {
-            double moyenne, er4, c, coefer4, coefc;
-            er4 = getMoyenne(con, "ER4");
-            c = getMoyenne(con, "C#");
-            coefer4 = 0.67;
-            coefc = 0.33;
+            double moyenne = 0, er4 = 0, c = 0, coefer4 = 0, coefc = 0;
+
+            if (semestre == 1)
+            {
+                er4 = getMoyenne(con, "ER1");
+                c = getMoyenne(con, "Projet scientifique");
+                coefer4 = 0.73;
+                coefc = 0.27;
+            }
+            else if (semestre == 2)
+            {
+                er4 = getMoyenne(con, "ER2");
+                c = getMoyenne(con, "Projet de physique");
+                coefer4 = 0.64;
+                coefc = 0.36;
+            }
+            else if (semestre == 3)
+            {
+                er4 = getMoyenne(con, "Projet TIPE");
+                coefc = 1;
+            }
+            else if (semestre == 4)
+            {
+                er4 = getMoyenne(con, "ER4");
+                c = getMoyenne(con, "C#");
+                coefer4 = 0.67;
+                coefc = 0.33;
+            }
             if (er4 == 0)
             {
                 coefer4 = 0;
