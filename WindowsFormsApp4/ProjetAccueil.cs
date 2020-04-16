@@ -307,28 +307,28 @@ namespace WindowsFormsApp4
             if (radioS1.Checked)
             {
                 semestre = 1;
-                string[] matière = new string[13] { "Mathématiques", "Mécanique du point", "Optique géométrique", "SE1", "ENER1", "INFO1", "SIN1", "Anglais", "LV2", "Communication", "ATC", "Projet scientifique", "ER1" };
+                string[] matière = new string[13] { "Mathématiques 1", "Mécanique du point", "Optique géométrique", "SE1", "ENER1", "INFO1", "SIN1", "Anglais 1", "LV2 1", "Communication", "ATC", "Projet scientifique", "ER1" };
                 comboBox1.Items.Clear();
                 comboBox1.Items.AddRange(matière);
             }
             else if (radioS2.Checked)
             {
                 semestre = 2;
-                string[] matière = new string[12] { "Mathématiques", "Électrostatique", "Magnétostatique", "SE2", "ENER2", "INFO2", "AUTO2", "Anglais", "LV2", "Communication", "Projet de physique", "ER2" };
+                string[] matière = new string[12] { "Mathématiques 2", "Électrostatique", "Magnétostatique", "SE2", "ENER2", "INFO2", "AUTO2", "Anglais 2", "LV2 2", "Communication", "Projet de physique", "ER2" };
                 comboBox1.Items.Clear();
                 comboBox1.Items.AddRange(matière);
             }
             else if (radioS3.Checked)
             {
                 semestre = 3;
-                string[] matière = new string[14] { "Mathématiques", "Induction", "Ondes et propagation", "SE3", "ENER3", "POO", "AUTO3", "AT33", "RES3", "Capteurs & Vision", "Anglais", "LV2", "Entreprises et communication", "Projet TIPE" };
+                string[] matière = new string[14] { "Mathématiques 3", "Induction", "Ondes et propagation", "SE3", "ENER3", "POO", "AUTO3", "AT33", "RES3", "Capteurs & Vision", "Anglais 3", "LV2 3", "Entreprises et communication", "Projet TIPE" };
                 comboBox1.Items.Clear();
                 comboBox1.Items.AddRange(matière);
             }
             else if (radioS4.Checked)
             {
                 semestre = 4;
-                string[] matière = new string[12] { "Mathématiques", "Interférences", "Thermodynamique", "OS25", "AT41", "RCP30", "RCP20", "Anglais","ER4","C#", "Connaissance des entreprises", "Stage" };
+                string[] matière = new string[12] { "Mathématiques 4", "Interférences", "Thermodynamique", "OS25", "AT41", "RCP30", "RCP20", "Anglais 4","ER4","C#", "Connaissance des entreprises", "Stage" };
                 comboBox1.Items.Clear();
                 comboBox1.Items.AddRange(matière);
             }
