@@ -108,12 +108,11 @@
             this.txtbox_sendmsg = new System.Windows.Forms.TextBox();
             this.txtbox_message = new System.Windows.Forms.RichTextBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.panelweb = new System.Windows.Forms.Panel();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
-            this.webBrowser2 = new System.Windows.Forms.WebBrowser();
             this.metroTabPage2 = new MetroFramework.Controls.MetroTabPage();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -130,10 +129,9 @@
             this.panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.metroTabControl1.SuspendLayout();
-            this.metroTabPage1.SuspendLayout();
-            this.metroTabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // metroPanel1
@@ -1138,6 +1136,7 @@
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage5.Controls.Add(this.panelweb);
             this.tabPage5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage5.ForeColor = System.Drawing.Color.White;
             this.tabPage5.Location = new System.Drawing.Point(8, 39);
@@ -1147,6 +1146,13 @@
             this.tabPage5.Size = new System.Drawing.Size(2048, 1226);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "tabPage5";
+            // 
+            // panelweb
+            // 
+            this.panelweb.Location = new System.Drawing.Point(33, 73);
+            this.panelweb.Name = "panelweb";
+            this.panelweb.Size = new System.Drawing.Size(1974, 1117);
+            this.panelweb.TabIndex = 0;
             // 
             // tabPage6
             // 
@@ -1169,14 +1175,13 @@
             this.metroTabControl1.Location = new System.Drawing.Point(34, 9);
             this.metroTabControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 1;
+            this.metroTabControl1.SelectedIndex = 0;
             this.metroTabControl1.Size = new System.Drawing.Size(1916, 1177);
             this.metroTabControl1.TabIndex = 0;
             this.metroTabControl1.UseSelectable = true;
             // 
             // metroTabPage1
             // 
-            this.metroTabPage1.Controls.Add(this.webBrowser2);
             this.metroTabPage1.HorizontalScrollbarBarColor = true;
             this.metroTabPage1.HorizontalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.HorizontalScrollbarSize = 16;
@@ -1190,18 +1195,8 @@
             this.metroTabPage1.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.VerticalScrollbarSize = 16;
             // 
-            // webBrowser2
-            // 
-            this.webBrowser2.Location = new System.Drawing.Point(-8, -41);
-            this.webBrowser2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.webBrowser2.MinimumSize = new System.Drawing.Size(30, 31);
-            this.webBrowser2.Name = "webBrowser2";
-            this.webBrowser2.Size = new System.Drawing.Size(1970, 1150);
-            this.webBrowser2.TabIndex = 2;
-            // 
             // metroTabPage2
             // 
-            this.metroTabPage2.Controls.Add(this.webBrowser1);
             this.metroTabPage2.HorizontalScrollbarBarColor = true;
             this.metroTabPage2.HorizontalScrollbarHighlightOnWheel = false;
             this.metroTabPage2.HorizontalScrollbarSize = 16;
@@ -1214,15 +1209,6 @@
             this.metroTabPage2.VerticalScrollbarBarColor = true;
             this.metroTabPage2.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage2.VerticalScrollbarSize = 16;
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Location = new System.Drawing.Point(0, 5);
-            this.webBrowser1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(30, 31);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1910, 1019);
-            this.webBrowser1.TabIndex = 2;
             // 
             // panel2
             // 
@@ -1313,10 +1299,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
             this.metroTabControl1.ResumeLayout(false);
-            this.metroTabPage1.ResumeLayout(false);
-            this.metroTabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1341,9 +1326,7 @@
         private System.Windows.Forms.Panel panel3;
         private MetroFramework.Controls.MetroTabControl metroTabControl1;
         private MetroFramework.Controls.MetroTabPage metroTabPage1;
-        private System.Windows.Forms.WebBrowser webBrowser2;
         private MetroFramework.Controls.MetroTabPage metroTabPage2;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.ListView lbCal2;
         private System.Windows.Forms.ListView lbCal4;
         private System.Windows.Forms.ListView lbCal6;
@@ -1400,5 +1383,6 @@
         private System.Windows.Forms.Button btn_savepdf;
         private System.Windows.Forms.Panel panel_imagepdf;
         private System.Windows.Forms.Button btn_supprallnotes;
+        private System.Windows.Forms.Panel panelweb;
     }
 }

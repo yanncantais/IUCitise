@@ -18,6 +18,8 @@ using iTextSharp.text.html;
 using iTextSharp.text.html.simpleparser;
 using Rectangle = iTextSharp.text.Rectangle;
 using System.Threading;
+using CefSharp;
+using CefSharp.WinForms;
 
 namespace WindowsFormsApp4
 {
@@ -55,6 +57,9 @@ namespace WindowsFormsApp4
             ChartType = SeriesChartType.Pie
         };
         int identifiantnote = 0;
+        public ChromiumWebBrowser chromeBrowser;
+        public ChromiumWebBrowser chromeBrowser1;
+        public ChromiumWebBrowser chromeBrowser2;
 
         public ProjetAccueil()
         {
@@ -65,10 +70,10 @@ namespace WindowsFormsApp4
             this.button1.Image = (System.Drawing.Image)(new Bitmap(btn_liensujmmootse.Image, new Size(32, 32)));
             this.button2.Image = (System.Drawing.Image)(new Bitmap(btn_quitter.Image, new Size(32, 32)));
             lbl_bonjour.Text = lbl_bonjour.Text + Properties.Settings.Default.prenom + ", nous sommes le " + DateTime.Now.ToShortDateString();
-            webBrowser2.Navigate("https://mootse.telecom-st-etienne.fr/login/index.php");
+          /*  webBrowser2.Navigate("https://mootse.telecom-st-etienne.fr/login/index.php");
             webBrowser1.Navigate("https://cas.univ-st-etienne.fr/esup-cas/login?service=https://ent.univ-st-etienne.fr/uPortal/Login");
             webBrowser1.ScriptErrorsSuppressed = true;
-            webBrowser2.ScriptErrorsSuppressed = true;
+            webBrowser2.ScriptErrorsSuppressed = true;*/
             txtbox_message.Text = "Bienvenue dans le chat..." + "\n";
             listlbCal = new ListView[7] { lbCal0,
                          lbCal1,
@@ -113,8 +118,42 @@ namespace WindowsFormsApp4
             lv_nextEval.ItemSelectionChanged += lbCal_ItemSelectionChanged;
             lv_nextEval.ColumnWidthChanging += lbCal_ColumnWidthChanging;
             label_releve.Text += Properties.Settings.Default.prenom + " " + Properties.Settings.Default.nom;
-        }
+            InitializeChromium();
 
+        }
+        public void InitializeChromium()
+        {
+            CefSettings settings = new CefSettings();
+
+            // Initialize cef with the provided settings
+            settings.DisableGpuAcceleration();
+            Cef.Initialize(settings);
+            //Cef.EnableHighDPISupport();
+
+            this.CenterToScreen();
+
+            //settings.CefCommandLineArgs.Add("disable-gpu", "1");
+            // Create a browser component
+            chromeBrowser = new ChromiumWebBrowser("https://drive.google.com/drive/folders/1s_ZxJ0EDVw3Zs5Htzj0UJ4rZgEYiydTJ?usp=sharing");
+            // Add it to the form and fill it to the form window.
+            panelweb.Controls.Add(chromeBrowser);
+            //Cef.EnableHighDPISupport();
+            chromeBrowser.Dock = DockStyle.Fill;
+            chromeBrowser.Size = panelweb.Size;
+
+            chromeBrowser.Anchor = panelweb.Anchor;
+            chromeBrowser1 = new ChromiumWebBrowser("https://mootse.telecom-st-etienne.fr/login/index.php");
+            metroTabPage1.Controls.Add(chromeBrowser1);
+            this.CenterToParent();
+            chromeBrowser1.Size = metroTabPage1.Size;
+            chromeBrowser2 = new ChromiumWebBrowser("https://cas.univ-st-etienne.fr/esup-cas/login?service=https://ent.univ-st-etienne.fr/uPortal/Login");
+            metroTabPage2.Controls.Add(chromeBrowser2);
+            this.CenterToParent();
+            chromeBrowser2.Size = metroTabPage2.Size;
+
+
+
+        }
         //--------------FONCTION QUI GERE LES POPUP---------------------s
         void axBrowser_NewWindow(string URL, int Flags, string TargetFrameName, ref object PostData, string Headers, ref bool Processed)
         {
@@ -122,7 +161,7 @@ namespace WindowsFormsApp4
             Processed = true;
 
             // send the popup URL to the WebBrowser control  
-            webBrowser1.Navigate(URL);
+            chromeBrowser1.Load(URL);
         }
         //----------------FIN DE FONCTION--------------------------
 
@@ -257,9 +296,9 @@ namespace WindowsFormsApp4
             }
             setIcalDB(calIUT, calTSE, con, con1, pieChart, chart1, sl);
             GetIcal(listlbCal, con, con1, lv_nextEval);
-            SHDocVw.WebBrowser_V1 axBrowser = (SHDocVw.WebBrowser_V1)webBrowser1.ActiveXInstance;
+           // SHDocVw.WebBrowser_V1 axBrowser = (SHDocVw.WebBrowser_V1)chromeBrowser1.ActiveXInstance;
             // listen for new windows  
-            axBrowser.NewWindow += axBrowser_NewWindow;
+           // axBrowser.NewWindow += axBrowser_NewWindow;
             //MarkSystem.cs
             drawDatagrid();
             //---------------------------------DATAGRID AU LANCEMENT DE L'APPLI---------------------------------
