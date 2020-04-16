@@ -124,21 +124,12 @@ namespace WindowsFormsApp4
         }
         public void InitializeChromium()
         {
-            CefSettings settings = new CefSettings();
-
-            // Initialize cef with the provided settings
-            settings.DisableGpuAcceleration();
-            Cef.Initialize(settings);
-            //Cef.EnableHighDPISupport();
-
             this.CenterToScreen();
 
-            //settings.CefCommandLineArgs.Add("disable-gpu", "1");
             // Create a browser component
             chromeBrowser = new ChromiumWebBrowser("https://drive.google.com/drive/folders/1s_ZxJ0EDVw3Zs5Htzj0UJ4rZgEYiydTJ?usp=sharing");
-            // Add it to the form and fill it to the form window.
             panelweb.Controls.Add(chromeBrowser);
-            //Cef.EnableHighDPISupport();
+
             chromeBrowser.Dock = DockStyle.Fill;
             chromeBrowser.Size = panelweb.Size;
 
@@ -147,6 +138,7 @@ namespace WindowsFormsApp4
             metroTabPage1.Controls.Add(chromeBrowser1);
             this.CenterToParent();
             chromeBrowser1.Size = metroTabPage1.Size;
+
             chromeBrowser2 = new ChromiumWebBrowser("https://cas.univ-st-etienne.fr/esup-cas/login?service=https://ent.univ-st-etienne.fr/uPortal/Login");
             metroTabPage2.Controls.Add(chromeBrowser2);
             LifespanHandler life = new LifespanHandler();
@@ -154,9 +146,6 @@ namespace WindowsFormsApp4
             life.popup_request += life_popup_request;
             this.CenterToParent();
             chromeBrowser2.Size = metroTabPage2.Size;
-
-
-
         }
         private void carregar_popup_new_browser(string url)
         {
@@ -170,7 +159,6 @@ namespace WindowsFormsApp4
         }
         private void life_popup_request(string obj)
         {
-            //function for open pop up in a new browser
             this.carregar_popup_new_browser(obj);
         }
         private void panel1_MouseMove(object sender, MouseEventArgs e)
@@ -238,22 +226,6 @@ namespace WindowsFormsApp4
             tabControl1.SelectedTab = tabPage6;
         }
         //----------------FIN DU CONTROLE DE LA BARRE DE SELECTION-------------
-
-        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-
-        }
-
-        private void listView6_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-        //-----------------------APPUI SUR LE BOUTON SAVE----------------
-        private void icalChanged(object sender, EventArgs e)
-        {
-            setIcalDB(calIUT, calTSE, con, con1, pieChart, chart1, sl);
-            GetIcal(listlbCal, con, con1, lv_nextEval);
-        }
 
         private void lbCal5_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -343,7 +315,40 @@ namespace WindowsFormsApp4
             refreshMoyennG();
             //End MarkSystem.cs
             lbl_warningeval.Text = lbl_warningeval.Text + lv_nextEval.Items.Count.ToString() + " évaluation(s) prévue(s) pour les 7 prochains jours";
+            radioS1.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
+            radioS2.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
+            radioS3.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
+            radioS4.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
+
             chatThread.Start();
+        }
+
+        private void radioButtons_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioS1.Checked == true)
+            {
+                string[] matière = new string[13] { "Mathématiques", "Mécanique du point", "Optique géométrique", "SE1", "ENER1", "INFO1", "SIN1", "Anglais", "LV2", "Communication", "ATC", "Projet scientifique", "ER1" };
+                comboBox1.Items.Clear();
+                comboBox1.Items.AddRange(matière);
+            }
+            else if (radioS2.Checked == true)
+            {
+                string[] matière = new string[12] { "Mathématiques", "Électrostatique", "Magnétostatique", "SE2", "ENER2", "INFO2", "AUTO2", "Anglais", "LV2", "Communication", "Projet de physique", "ER2" };
+                comboBox1.Items.Clear();
+                comboBox1.Items.AddRange(matière);
+            }
+            else if (radioS3.Checked == true)
+            {
+                string[] matière = new string[14] { "Mathématiques", "Induction", "Ondes et propagation", "SE3", "ENER3", "POO", "AUTO3", "AT33", "RES3", "Capteurs & Vision", "Anglais", "LV2", "Entreprises et communication", "Projet TIPE" };
+                comboBox1.Items.Clear();
+                comboBox1.Items.AddRange(matière);
+            }
+            else if (radioS4.Checked == true)
+            {
+                string[] matière = new string[12] { "Mathématiques", "Interférences", "Thermodynamique", "OS25", "AT41", "RCP30", "RCP20", "Anglais","ER4","C#", "Connaissance des entreprises", "Stage" };
+                comboBox1.Items.Clear();
+                comboBox1.Items.AddRange(matière);
+            }
         }
 
         //------------------------EMPECHE L'UTILISATEUR DE REDIMENSIONNER LA COLONNE DES LISTVIEW-------------

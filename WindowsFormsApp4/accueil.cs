@@ -1,4 +1,6 @@
-﻿using Npgsql;
+﻿using CefSharp;
+using CefSharp.WinForms;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +21,9 @@ namespace WindowsFormsApp4
         public accueil()
         {
             InitializeComponent();
+            CefSettings settings = new CefSettings();
+            settings.DisableGpuAcceleration();
+            Cef.Initialize(settings);
             Properties.Settings.Default.version = "1.2.2";
             try
             {
@@ -62,6 +67,7 @@ namespace WindowsFormsApp4
         private void btn_quitter_Click(object sender, EventArgs e)
         {
             this.Close();
+            Cef.Shutdown();
             Application.Exit();
         }
 
