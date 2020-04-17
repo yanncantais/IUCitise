@@ -22,6 +22,7 @@ namespace WindowsFormsApp4
         {
             InitializeComponent();
             CefSettings settings = new CefSettings();
+            settings.Locale = "fr";
             settings.DisableGpuAcceleration();
             Cef.Initialize(settings);
             Properties.Settings.Default.version = "1.2.2";

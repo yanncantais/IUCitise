@@ -226,6 +226,7 @@
     <Compile Include="connexion.Designer.cs">
       <DependentUpon>connexion.cs</DependentUpon>
     </Compile>
+    <Compile Include="DownloadSystem.cs" />
     <Compile Include="forgot.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -21,6 +21,7 @@ using System.Threading;
 using CefSharp;
 using CefSharp.WinForms;
 using static WindowsFormsApp4.PopupSystem;
+using static WindowsFormsApp4.DownloadSystem;
 
 namespace WindowsFormsApp4
 {
@@ -129,6 +130,7 @@ namespace WindowsFormsApp4
 
             // Create a browser component
             chromeBrowser = new ChromiumWebBrowser("https://drive.google.com/drive/folders/1s_ZxJ0EDVw3Zs5Htzj0UJ4rZgEYiydTJ?usp=sharing");
+            chromeBrowser.DownloadHandler = new DownloadHandler();
             panelweb.Controls.Add(chromeBrowser);
 
             chromeBrowser.Dock = DockStyle.Fill;
@@ -136,11 +138,13 @@ namespace WindowsFormsApp4
 
             chromeBrowser.Anchor = panelweb.Anchor;
             chromeBrowser1 = new ChromiumWebBrowser("https://mootse.telecom-st-etienne.fr/login/index.php");
+            chromeBrowser1.DownloadHandler = new DownloadHandler();
             metroTabPage1.Controls.Add(chromeBrowser1);
             this.CenterToParent();
             chromeBrowser1.Size = metroTabPage1.Size;
 
             chromeBrowser2 = new ChromiumWebBrowser("https://cas.univ-st-etienne.fr/esup-cas/login?service=https://ent.univ-st-etienne.fr/uPortal/Login");
+            chromeBrowser2.DownloadHandler = new DownloadHandler();
             metroTabPage2.Controls.Add(chromeBrowser2);
             LifespanHandler life = new LifespanHandler();
             chromeBrowser2.LifeSpanHandler = life;
