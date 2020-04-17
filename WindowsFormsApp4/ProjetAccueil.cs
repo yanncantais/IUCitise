@@ -935,6 +935,11 @@ namespace WindowsFormsApp4
             btn_supprallnotes.Enabled = true;
         }
 
+        public void focusChat()
+        {
+            tabControl1.SelectedTab = tabPage4;
+        }
+
         //========ChatSystem utilisé dans le thread================//
         /// <summary>
         /// Récupère  les messages par ordre d'envoi dans la base de donnée en ligne. Les messages sont affichés dans la RichTextBox.

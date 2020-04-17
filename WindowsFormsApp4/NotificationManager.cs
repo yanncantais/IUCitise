@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using Tulpep.NotificationWindow;
 
 namespace WindowsFormsApp4
@@ -23,7 +24,17 @@ namespace WindowsFormsApp4
             popup.Image = Properties.Resources.btn_chat_Image;
             popup.ContentText = content;
             popup.Popup();
+            popup.Click += new System.EventHandler(Popup_Click);
             t.Focus();
+        }
+
+        private static void Popup_Click(object sender, EventArgs e)
+        {
+            ProjetAccueil p = (ProjetAccueil)Application.OpenForms["ProjetAccueil"];
+            if(p != null)
+            {
+                p.focusChat();
+            }
         }
     }
 }
