@@ -474,7 +474,7 @@ namespace WindowsFormsApp4
                     int id = System.Convert.ToInt32(comm.ExecuteScalar());//Nombre de messages dans la base de donnée
                     if (id != 0)
                     {
-                        cmd = new NpgsqlCommand("SELECT MAX(identifiantnote) FROM notes", con);
+                        cmd = new NpgsqlCommand("SELECT MAX(identifiantnote) FROM notes where numetu ='" + Properties.Settings.Default.idetu +"'", con);
                         cmd.ExecuteNonQuery();
                         identifiantnote = Convert.ToInt32(cmd.ExecuteScalar()) + 1;
                     }
@@ -502,16 +502,23 @@ namespace WindowsFormsApp4
         private void button2_Click(object sender, EventArgs e)
         {
             button2.Enabled = false;
-            deleteOnlineMark(con, Convert.ToInt32(comboBox2.Text));
-            comboBox2.Items.Remove(comboBox2.Text);
-            NpgsqlDataAdapter da = new NpgsqlDataAdapter();
-            da = getOnlineMark(con, semestre);
-            DataSet ds = new DataSet();
-            da.Fill(ds, "moyennes");
-            dataGridView1.DataSource = ds;
-            dataGridView1.DataMember = "moyennes";
-            refreshRadarGraph();
-            refreshMoyennG();
+            if (comboBox2.Text == "")
+            {
+                MessageBox.Show("Veuillez sélectionner un id correspondant à une note", "Erreur de saisie");
+            }
+            else
+            {
+                deleteOnlineMark(con, Convert.ToInt32(comboBox2.Text));
+                comboBox2.Items.Remove(comboBox2.Text);
+                NpgsqlDataAdapter da = new NpgsqlDataAdapter();
+                da = getOnlineMark(con, semestre);
+                DataSet ds = new DataSet();
+                da.Fill(ds, "moyennes");
+                dataGridView1.DataSource = ds;
+                dataGridView1.DataMember = "moyennes";
+                refreshRadarGraph();
+                refreshMoyennG();
+            }
             button2.Enabled = true;
         }
 
