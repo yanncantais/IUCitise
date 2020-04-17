@@ -335,6 +335,7 @@ namespace WindowsFormsApp4
             refreshDataGrid();
             refreshRadarGraph();
             refreshMoyennG();
+            dataGridView1.Rows[0].Cells[0].Selected = false;
         }
 
         //------------------------EMPECHE L'UTILISATEUR DE REDIMENSIONNER LA COLONNE DES LISTVIEW-------------
@@ -490,6 +491,7 @@ namespace WindowsFormsApp4
                     con.Close();
                     refreshRadarGraph();
                     refreshMoyennG();
+                    dataGridView1.Rows[0].Cells[0].Selected = false;
 
                 }
                 catch
@@ -518,6 +520,7 @@ namespace WindowsFormsApp4
                 dataGridView1.DataMember = "moyennes";
                 refreshRadarGraph();
                 refreshMoyennG();
+                dataGridView1.Rows[0].Cells[0].Selected = false;
             }
             button2.Enabled = true;
         }
