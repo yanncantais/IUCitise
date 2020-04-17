@@ -340,7 +340,10 @@ namespace WindowsFormsApp4
             refreshDataGrid();
             refreshRadarGraph();
             refreshMoyennG();
-            dataGridView1.Rows[0].Cells[0].Selected = false;
+            if (dataGridView1.Rows.Count != 0)
+            {
+                dataGridView1.Rows[0].Cells[0].Selected = false;
+            }
         }
 
         //------------------------EMPECHE L'UTILISATEUR DE REDIMENSIONNER LA COLONNE DES LISTVIEW-------------
@@ -870,7 +873,11 @@ namespace WindowsFormsApp4
             {
                 coefstage = 0;
             }
-            if(moyennecom != 0 && moyenneiut != 0 && moyenneprojet != 0 && moyennestage != 0 && moyenneth != 0)
+            if(moyennecom == 0 && moyenneiut == 0 && moyenneprojet == 0 && moyennestage == 0 && moyenneth == 0)
+            {
+                moyenneg = 0;
+            }
+            else
             {
                 moyenneg = (moyenneth * coefth + moyenneiut * coefiut + moyennecom * coefcom + moyenneprojet * coefprojet + moyennestage * coefstage) / (coefprojet + coefcom + coefiut + coefth + coefstage);
             }
