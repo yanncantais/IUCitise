@@ -155,6 +155,7 @@ namespace WindowsFormsApp4
         private void carregar_popup_new_browser(string url)
         {
             chromeBrowser2 = new ChromiumWebBrowser(url);
+            chromeBrowser2.DownloadHandler = new DownloadHandler();
             this.Invoke((MethodInvoker)delegate ()
             {
                 this.metroTabPage2.Controls.Clear();
