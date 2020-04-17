@@ -24,8 +24,8 @@ namespace WindowsFormsApp4
           try
             {
                 nextEval.Items.Clear();
-            conEdt.Close();
-            conEdt1.Close();
+                conEdt.Close();
+                conEdt1.Close();
                 conEdt.Open();
                 conEdt1.Open();
 
@@ -318,6 +318,8 @@ namespace WindowsFormsApp4
                         }
                     }
                 }
+                conEdt.Close();
+                conEdtAdd.Close();
                 conEdt.Open();
                 conEdtAdd.Open();
                 NpgsqlCommand comm1 = new NpgsqlCommand("SELECT COUNT(*) FROM edt", conEdt);
