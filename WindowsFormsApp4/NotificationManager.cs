@@ -10,15 +10,8 @@ namespace WindowsFormsApp4
         /// </summary>
         public static void PlayNotificationSound()
         {
-            try
-            {
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer(Application.StartupPath.ToString() + "/notif.wav");
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(Properties.Resources.notif);
                 player.Play();
-            }
-            catch
-            {
-
-            }
         }
         /// <summary>
         /// Fait apparaître une notification sur le bord droit de l'écran et redonne le focus à la textbox

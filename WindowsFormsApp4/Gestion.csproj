@@ -338,6 +338,7 @@
     <None Include="Resources\networking.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="bin\Debug\notif.wav" />
     <Content Include="networking %281%29.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

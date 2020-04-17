@@ -89,5 +89,14 @@ namespace WindowsFormsApp4.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.IO.UnmanagedMemoryStream semblable à System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream notif {
+            get {
+                return ResourceManager.GetStream("notif", resourceCulture);
+            }
+        }
     }
 }

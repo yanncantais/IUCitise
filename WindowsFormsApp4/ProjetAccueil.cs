@@ -870,7 +870,10 @@ namespace WindowsFormsApp4
             {
                 coefstage = 0;
             }
-            moyenneg = (moyenneth* coefth + moyenneiut* coefiut + moyennecom* coefcom + moyenneprojet*coefprojet +moyennestage*coefstage) / (coefprojet + coefcom + coefiut + coefth + coefstage);
+            if(moyennecom != 0 && moyenneiut != 0 && moyenneprojet != 0 && moyennestage != 0 && moyenneth != 0)
+            {
+                moyenneg = (moyenneth * coefth + moyenneiut * coefiut + moyennecom * coefcom + moyenneprojet * coefprojet + moyennestage * coefstage) / (coefprojet + coefcom + coefiut + coefth + coefstage);
+            }
             label_moyg.Text = "Moyenne générale: " + Math.Round(moyenneg, 2).ToString();
         }
         private Byte[] getChartBuffer()
@@ -954,11 +957,11 @@ namespace WindowsFormsApp4
                             }
                             txtbox_message.SelectionStart = txtbox_message.TextLength;
                             txtbox_message.ScrollToCaret();
-                            if (sound == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
+                            if (CheckBoxNotifSound == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
                             {
                                 PlayNotificationSound();
                             }
-                            if (vis == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
+                            if (CheckBoxNotifVis == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
                             {
                                 NotifyPopup("Nouveau message de " + dt.Rows[id - 1]["idetu"].ToString(), dt.Rows[id - 1]["msg"].ToString(), txtbox_sendmsg);
                             }
@@ -969,14 +972,18 @@ namespace WindowsFormsApp4
                         txtbox_message.Text += "\n" + "(" + dt.Rows[id - 1]["time"].ToString() + " / " + dt.Rows[id - 1]["idetu"].ToString() + ") :  " + dt.Rows[id - 1]["msg"].ToString();
                         txtbox_message.SelectionStart = txtbox_message.TextLength;
                         txtbox_message.ScrollToCaret();
-                        if (sound == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
+                        if (CheckBoxNotifSound == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
                         {
                             PlayNotificationSound();
                         }
-                        if (vis == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
+                        if (CheckBoxNotifVis == true && dt.Rows[id - 1]["idetu"].ToString() != Properties.Settings.Default.idetu && first == 0)
                         {
                             NotifyPopup("Nouveau message de " + dt.Rows[id - 1]["idetu"].ToString(), dt.Rows[id - 1]["msg"].ToString(), txtbox_sendmsg);
                         }
+                    }
+                    if(first == 1)
+                    {
+                        first = 0;
                     }
                 }
                 else//Si la base de donnée est vide
