@@ -1,4 +1,5 @@
-﻿using Ical.Net.DataTypes;
+﻿#region toutes les library et packages utilisés
+using Ical.Net.DataTypes;
 using Npgsql;
 using System;
 using System.Data;
@@ -22,19 +23,24 @@ using CefSharp;
 using CefSharp.WinForms;
 using static WindowsFormsApp4.PopupSystem;
 using static WindowsFormsApp4.DownloadSystem;
+#endregion
 
 namespace WindowsFormsApp4
 {
     public partial class ProjetAccueil : Form
     {
+        #region déclaration des différents composants
+        #region Connexion à la base de donnée
+        //On se connecte à la base de donnée
         public NpgsqlConnection con = new NpgsqlConnection("Server=87.91.82.229;Port=5432;" + "User Id=yannMax;Password=admin;Database=database1");
         public NpgsqlConnection con1 = new NpgsqlConnection("Server=87.91.82.229;Port=5432;" + "User Id=yannMax;Password=admin;Database=database1");
         public NpgsqlCommand cmd;
         public NpgsqlDataReader dr;
+        #endregion
         bool scrolled = false;
         int first = 1;
         int semestre = 0;
-        Thread chatThread;
+        Thread chatThread; //On déclare un thread pour le chat en ligne
         bool sound = true;
         bool vis = true;
         public Parametres parametres;
@@ -60,24 +66,24 @@ namespace WindowsFormsApp4
             ChartType = SeriesChartType.Pie
         };
         int identifiantnote = 0;
+        #region Déclaration chromiumbrowsers
         public ChromiumWebBrowser chromeBrowser;
         public ChromiumWebBrowser chromeBrowser1;
         public ChromiumWebBrowser chromeBrowser2;
-
+        #endregion
+        #endregion
         public ProjetAccueil()
         {
-            InitializeComponent();
-            this.CenterToScreen();
-            chatThread = new Thread(new ThreadStart(ThreadLoop));
-            this.Text = "Gestionnaire CiTiSE - " + Properties.Settings.Default.prenom;
+            InitializeComponent();//Ce qu'il faut faire pour toute form--> initialiser
+            this.CenterToScreen();//on centre au milieu de l'écran
+            chatThread = new Thread(new ThreadStart(ThreadLoop));//On crée un thread pour le chat
+            this.Text = "Gestionnaire CiTiSE - " + Properties.Settings.Default.prenom;//Affichage personnalisé
             this.button1.Image = (System.Drawing.Image)(new Bitmap(btn_liensujmmootse.Image, new Size(32, 32)));
             this.button2.Image = (System.Drawing.Image)(new Bitmap(btn_quitter.Image, new Size(32, 32)));
+            //Affichage personnalisé avec prenom et nom du user + la date 
             lbl_bonjour.Text = lbl_bonjour.Text + Properties.Settings.Default.prenom + ", nous sommes le " + DateTime.Now.ToShortDateString();
-          /*  webBrowser2.Navigate("https://mootse.telecom-st-etienne.fr/login/index.php");
-            webBrowser1.Navigate("https://cas.univ-st-etienne.fr/esup-cas/login?service=https://ent.univ-st-etienne.fr/uPortal/Login");
-            webBrowser1.ScriptErrorsSuppressed = true;
-            webBrowser2.ScriptErrorsSuppressed = true;*/
-            txtbox_message.Text = "Bienvenue dans le chat..." + "\n";
+            txtbox_message.Text = "Bienvenue dans le chat..." + "\n";//texte d'accueil du chat
+            #region Gestion du calendrier
             listlbCal = new ListView[7] { lbCal0,
                          lbCal1,
                          lbCal2,
@@ -91,7 +97,8 @@ namespace WindowsFormsApp4
                 listlbCal[i].ItemSelectionChanged += lbCal_ItemSelectionChanged;
                 listlbCal[i].ColumnWidthChanging += lbCal_ColumnWidthChanging;
             }
-
+            #endregion
+            #region Gestion des graphiques
             pieChart.Size = new Size(375, 375);
             pieChart.Location = new Point(0, 225);
             ChartArea area = new ChartArea("Volume horaire");
@@ -100,11 +107,14 @@ namespace WindowsFormsApp4
             pieChart.Legends.Add(l);
             pieChart.Series.Add(sl);
             tabPage2.Controls.Add(pieChart);
-
+            #endregion
+            #region Pouvoir nettoyer le chat en temps qu'admin
+            //Pouvoir nettoyer le chat en temps qu'admin
             if (Properties.Settings.Default.idetu == "cantais.yann" || Properties.Settings.Default.idetu == "perrin.maxime")
             {
                 btn_cleanchat.Visible = true;
             }
+            #endregion
             lb_Online.DrawMode = DrawMode.OwnerDrawFixed;
             lb_Online.DrawItem += new DrawItemEventHandler(listBox_DrawItem);
             lb_Online.Enabled = false;
@@ -121,91 +131,10 @@ namespace WindowsFormsApp4
             lv_nextEval.ItemSelectionChanged += lbCal_ItemSelectionChanged;
             lv_nextEval.ColumnWidthChanging += lbCal_ColumnWidthChanging;
             label_releve.Text += Properties.Settings.Default.prenom + " " + Properties.Settings.Default.nom;
-            InitializeChromium();
+            InitializeChromium();//Création des chromebrowsers
 
         }
-        public void InitializeChromium()
-        {
-            this.CenterToScreen();
-
-            // Create a browser component
-            chromeBrowser = new ChromiumWebBrowser("https://drive.google.com/drive/folders/1s_ZxJ0EDVw3Zs5Htzj0UJ4rZgEYiydTJ?usp=sharing");
-            chromeBrowser.DownloadHandler = new DownloadHandler();
-            panelweb.Controls.Add(chromeBrowser);
-
-            chromeBrowser.Dock = DockStyle.Fill;
-            chromeBrowser.Size = panelweb.Size;
-
-            chromeBrowser.Anchor = panelweb.Anchor;
-            chromeBrowser1 = new ChromiumWebBrowser("https://mootse.telecom-st-etienne.fr/login/index.php");
-            chromeBrowser1.DownloadHandler = new DownloadHandler();
-            metroTabPage1.Controls.Add(chromeBrowser1);
-            this.CenterToParent();
-            chromeBrowser1.Size = metroTabPage1.Size;
-
-            chromeBrowser2 = new ChromiumWebBrowser("https://cas.univ-st-etienne.fr/esup-cas/login?service=https://ent.univ-st-etienne.fr/uPortal/Login");
-            chromeBrowser2.DownloadHandler = new DownloadHandler();
-            metroTabPage2.Controls.Add(chromeBrowser2);
-            LifespanHandler life = new LifespanHandler();
-            chromeBrowser2.LifeSpanHandler = life;
-            life.popup_request += life_popup_request;
-            this.CenterToParent();
-            chromeBrowser2.Size = metroTabPage2.Size;
-        }
-        private void carregar_popup_new_browser(string url)
-        {
-            chromeBrowser2 = new ChromiumWebBrowser(url);
-            chromeBrowser2.DownloadHandler = new DownloadHandler();
-            this.Invoke((MethodInvoker)delegate ()
-            {
-                this.metroTabPage2.Controls.Clear();
-                this.metroTabPage2.Controls.Add(chromeBrowser2);
-            });
-            chromeBrowser2.Dock = DockStyle.Fill;
-        }
-        private void life_popup_request(string obj)
-        {
-            this.carregar_popup_new_browser(obj);
-        }
-        private void panel1_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (scrolled)
-            {
-                this.Left = e.X + this.Left - (pointChat.X);
-                this.Top = e.Y + this.Top - (pointChat.Y);
-            }
-        }
-
-        private void panel1_MouseDown(object sender, MouseEventArgs e)
-        {
-            scrolled = true;
-            this.Cursor = Cursors.SizeAll;
-            pointChat = e.Location;
-        }
-
-        private void panel1_MouseUp(object sender, MouseEventArgs e)
-        {
-            scrolled = false;
-            this.Cursor = Cursors.Default;
-        }
-
-        private void btn_inscription_Click(object sender, EventArgs e)
-        {
-            tabControl1.SelectedTab = tabPage1;
-        }
-        //---------------APPUI SUR LE BOUTON FERMER-------------
-        private void btn_quitter_Click(object sender, EventArgs e)
-        {
-            UpdateOnlineState(con, 0);
-            this.Close();
-            foreach (Form form in Application.OpenForms)
-            {
-                if (form.Name == "accueil")
-                {
-                    form.Show();
-                }
-            }
-        }
+        #region GESTION GENERALE
         //-----------------CONTROLE DE LA BARRE DE SELECTION--------------
         private void btn_emploidutemps_Click(object sender, EventArgs e)
         {
@@ -237,156 +166,29 @@ namespace WindowsFormsApp4
         {
 
         }
-        //-----------------------THREAD POUR RECUPERER LES ELEVES EN LIGNE-----------------
-        private void ThreadLoop()
+        //---------------APPUI SUR LE BOUTON FERMER-------------
+        #region Fermer l'application
+        private void btn_quitter_Click(object sender, EventArgs e)
         {
-            while (true)
+            UpdateOnlineState(con, 0);
+            this.Close();//On ferme ce form
+            foreach (Form form in Application.OpenForms)
             {
-                try
+                if (form.Name == "accueil")//On rend le form accueil visible
                 {
-                    this.Invoke(new MethodInvoker(delegate { AllMessageLists(); }));
-                    this.Invoke(new MethodInvoker(delegate { RefreshOnline(); }));
-                    Console.WriteLine("OK");
-                    Thread.Sleep(200);
-                }
-                catch
-                {
-                    Console.WriteLine("Stop");
-                    break;
+                    form.Show();
                 }
             }
         }
-        //--------------------CHARGEMENT DU PANEL PRINCIPAL---------------------
-        private void ProjetAccueil_Load(object sender, EventArgs e)
+        #endregion
+        #endregion
+        #region Part 1: ACCUEIL
+        //bouton d'accueil-->on revient au menu
+        private void btn_inscription_Click(object sender, EventArgs e)
         {
-            calTSE = "https://www.telecom-st-etienne.fr/intranet/icsbyuid.php?uid=" + Properties.Settings.Default.idetu;
-            string groupe = Properties.Settings.Default.groupe;
-            switch (groupe)
-            {
-                case "A1":
-                    calIUT = "https://planning.univ-st-etienne.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=4620&projectId=3&calType=ical&firstDate=2019-08-20&lastDate=2020-08-19";
-                    break;
-                case "A2":
-                    calIUT = "https://planning.univ-st-etienne.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=4619&projectId=3&calType=ical&firstDate=2019-08-20&lastDate=2020-08-19";
-                    break;
-                case "B1":
-                    calIUT = "https://planning.univ-st-etienne.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=5426&projectId=3&calType=ical&firstDate=2019-08-20&lastDate=2020-08-19";
-                    break;
-                case "B2":
-                    calIUT = "https://planning.univ-st-etienne.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=5425&projectId=3&calType=ical&firstDate=2019-08-20&lastDate=2020-08-19";
-                    break;
-            }
-            setIcalDB(calIUT, calTSE, con, con1, pieChart, chart1, sl);
-            GetIcal(listlbCal, con, con1, lv_nextEval);
-           // SHDocVw.WebBrowser_V1 axBrowser = (SHDocVw.WebBrowser_V1)chromeBrowser1.ActiveXInstance;
-            // listen for new windows  
-           // axBrowser.NewWindow += axBrowser_NewWindow;
-            //MarkSystem.cs
-            drawDatagrid();
-            //---------------------------------DATAGRID AU LANCEMENT DE L'APPLI---------------------------------
-            con.Close();
-            con.Open();
-
-            //On efface le contenu de moyennes
-            cmd = new NpgsqlCommand("delete from moyennes", con);
-            cmd.ExecuteNonQuery();
-
-            //On affiche moyennes sur le datagrid
-            refreshDataGrid();
-            con.Close();
-
-            refreshRadarGraph();
-            refreshMoyennG();
-            //End MarkSystem.cs
-            lbl_warningeval.Text = lbl_warningeval.Text + lv_nextEval.Items.Count.ToString() + " évaluation(s) prévue(s) pour les 7 prochains jours";
-            radioS1.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
-            radioS2.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
-            radioS3.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
-            radioS4.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
-
-            chatThread.Start();
+            tabControl1.SelectedTab = tabPage1;
         }
-
-        private void radioButtons_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioS1.Checked)
-            {
-                semestre = 1;
-                string[] matière = new string[13] { "Mathématiques 1", "Mécanique du point", "Optique géométrique", "SE1", "ENER1", "INFO1", "SIN1", "Anglais 1", "LV2 1", "Communication", "ATC", "Projet scientifique", "ER1" };
-                comboBox1.Items.Clear();
-                comboBox1.Items.AddRange(matière);
-            }
-            else if (radioS2.Checked)
-            {
-                semestre = 2;
-                string[] matière = new string[12] { "Mathématiques 2", "Électrostatique", "Magnétostatique", "SE2", "ENER2", "INFO2", "AUTO2", "Anglais 2", "LV2 2", "Communication", "Projet de physique", "ER2" };
-                comboBox1.Items.Clear();
-                comboBox1.Items.AddRange(matière);
-            }
-            else if (radioS3.Checked)
-            {
-                semestre = 3;
-                string[] matière = new string[14] { "Mathématiques 3", "Induction", "Ondes et propagation", "SE3", "ENER3", "POO", "AUTO3", "AT33", "RES3", "Capteurs & Vision", "Anglais 3", "LV2 3", "Entreprises et communication", "Projet TIPE" };
-                comboBox1.Items.Clear();
-                comboBox1.Items.AddRange(matière);
-            }
-            else if (radioS4.Checked)
-            {
-                semestre = 4;
-                string[] matière = new string[12] { "Mathématiques 4", "Interférences", "Thermodynamique", "OS25", "AT41", "RCP30", "RCP20", "Anglais 4","ER4","C#", "Connaissance des entreprises", "Stage" };
-                comboBox1.Items.Clear();
-                comboBox1.Items.AddRange(matière);
-            }
-            refreshDataGrid();
-            refreshRadarGraph();
-            refreshMoyennG();
-            if (dataGridView1.Rows.Count != 0)
-            {
-                dataGridView1.Rows[0].Cells[0].Selected = false;
-            }
-        }
-
-        //------------------------EMPECHE L'UTILISATEUR DE REDIMENSIONNER LA COLONNE DES LISTVIEW-------------
-        private void lbCal_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
-        {
-            e.Cancel = true;
-            e.NewWidth = -1;
-        }
-        private void lbCal_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
-        {
-            if (e.IsSelected)
-                e.Item.Selected = false;
-        }
-        private void btn_envoyer_Click(object sender, EventArgs e)
-        {
-            btn_envoyer.Enabled = false;
-            SendMessage(txtbox_sendmsg.Text, con);
-            txtbox_sendmsg.Text = "";
-            btn_envoyer.Enabled = true;
-        }
-        private void txtbox_sendmsg_KeyPress(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btn_envoyer_Click(sender, e);
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-        }
-
-        private void btn_cleanchat_Click(object sender, EventArgs e)
-        {
-            btn_cleanchat.Enabled = false;
-            cleanChat(con);
-            btn_cleanchat.Enabled = true;
-        }
-
-        private void btn_refreshedt_Click(object sender, EventArgs e)
-        {
-            setIcalDB(calIUT, calTSE, con, con1, pieChart, chart1, sl);
-            GetIcal(listlbCal, con, con1, lv_nextEval);
-        }
-
+        //Bouton paramètres--> ouvre la fenêtre paramètre
         private void btn_parametres_Click(object sender, EventArgs e)
         {
             bool present = false;
@@ -406,6 +208,16 @@ namespace WindowsFormsApp4
                 param.Show();
             }
         }
+        #endregion
+        #region Part 2: EMPLOI DU TEMPS
+        //rafraichir l'emploi du temps
+        private void btn_refreshedt_Click(object sender, EventArgs e)
+        {
+            setIcalDB(calIUT, calTSE, con, con1, pieChart, chart1, sl);
+            GetIcal(listlbCal, con, con1, lv_nextEval);
+        }
+        #region Texbox ical iut/tse
+        //TextboxIcal IUT et TSE
         public string TextBoxIcalTSEValue
         {
             set
@@ -420,29 +232,54 @@ namespace WindowsFormsApp4
                 calIUT = value;
             }
         }
-        public bool CheckBoxNotifSound
+        #endregion
+        #endregion
+        #region Part3: BULLETIN ET GESTION DES NOTES
+        #region Conditionner les matières possibles pour rentrer une note en fonction du semestre
+        private void radioButtons_CheckedChanged(object sender, EventArgs e)
         {
-            set
+            //Pour chaque semestre, on a les differentes matières 
+            //On conditionne ensuite les matières sélectionnables pour rentrer une note en fonction du bouton sélectionné
+            if (radioS1.Checked)
             {
-                sound = value;
+                semestre = 1;
+                string[] matière = new string[13] { "Mathématiques 1", "Mécanique du point", "Optique géométrique", "SE1", "ENER1", "INFO1", "SIN1", "Anglais 1", "LV2 1", "Communication", "ATC", "Projet scientifique", "ER1" };
+                comboBox1.Items.Clear();//On vide les items de la combobox choix de matière pour rentrer une note
+                comboBox1.Items.AddRange(matière);//La combobox du choix de matière pour rentrer une note est condtionnée par semestre
             }
-            get
+            else if (radioS2.Checked)
             {
-                return sound;
+                semestre = 2;
+                string[] matière = new string[12] { "Mathématiques 2", "Électrostatique", "Magnétostatique", "SE2", "ENER2", "INFO2", "AUTO2", "Anglais 2", "LV2 2", "Communication", "Projet de physique", "ER2" };
+                comboBox1.Items.Clear();
+                comboBox1.Items.AddRange(matière);
+            }
+            else if (radioS3.Checked)
+            {
+                semestre = 3;
+                string[] matière = new string[14] { "Mathématiques 3", "Induction", "Ondes et propagation", "SE3", "ENER3", "POO", "AUTO3", "AT33", "RES3", "Capteurs & Vision", "Anglais 3", "LV2 3", "Entreprises et communication", "Projet TIPE" };
+                comboBox1.Items.Clear();
+                comboBox1.Items.AddRange(matière);
+            }
+            else if (radioS4.Checked)
+            {
+                semestre = 4;
+                string[] matière = new string[12] { "Mathématiques 4", "Interférences", "Thermodynamique", "OS25", "AT41", "RCP30", "RCP20", "Anglais 4", "ER4", "C#", "Connaissance des entreprises", "Stage" };
+                comboBox1.Items.Clear();
+                comboBox1.Items.AddRange(matière);
+            }
+            refreshDataGrid();
+            refreshRadarGraph();
+            refreshMoyennG();
+            if (dataGridView1.Rows.Count != 0)
+            {
+                dataGridView1.Rows[0].Cells[0].Selected = false;
             }
         }
-        public bool CheckBoxNotifVis
-        {
-            set
-            {
-                vis = value;
-            }
-            get
-            {
-                return vis;
-            }
-        }
-
+        #endregion
+        #region Gestion des notes
+        #region Bouton pour rentrer une note
+        //Rentrer une note en clickant sur le bouton: liaison avec les différentes textbox
         private void button1_Click_2(object sender, EventArgs e)
         {
             button1.Enabled = false;
@@ -464,7 +301,7 @@ namespace WindowsFormsApp4
             }
             catch
             {
-                if(textBox1.Text == "" || textBox2.Text == "")
+                if (textBox1.Text == "" || textBox2.Text == "")
                 {
                     MessageBox.Show("Veuillez renseigner une note et coefficient", "Erreur de saisie");
                 }
@@ -483,11 +320,11 @@ namespace WindowsFormsApp4
                     int id = System.Convert.ToInt32(comm.ExecuteScalar());//Nombre de messages dans la base de donnée
                     if (id != 0)
                     {
-                        cmd = new NpgsqlCommand("SELECT MAX(identifiantnote) FROM notes where numetu ='" + Properties.Settings.Default.idetu +"'", con);
+                        cmd = new NpgsqlCommand("SELECT MAX(identifiantnote) FROM notes where numetu ='" + Properties.Settings.Default.idetu + "'", con);
                         cmd.ExecuteNonQuery();
                         identifiantnote = Convert.ToInt32(cmd.ExecuteScalar()) + 1;
                     }
-                    
+
                     setOnlineMark(con, comboBox1.Text, note, coef, identifiantnote);
                     comboBox2.Items.Add(identifiantnote);
                     NpgsqlDataAdapter da = new NpgsqlDataAdapter();
@@ -509,6 +346,9 @@ namespace WindowsFormsApp4
             }
             button1.Enabled = true;
         }
+        #endregion
+        #region Bouton pour supprimer une note
+        //Supprimer une note en clickant sur le bouton: liaison avec la textbox
         private void button2_Click(object sender, EventArgs e)
         {
             button2.Enabled = false;
@@ -532,7 +372,8 @@ namespace WindowsFormsApp4
             }
             button2.Enabled = true;
         }
-
+        #endregion
+        #endregion
         void listBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             ListBox list = (ListBox)sender;
@@ -568,6 +409,8 @@ namespace WindowsFormsApp4
             label_moycom.Text = "| " + moyennecom.ToString();
             label_moyprojet.Text = "| " + moyenneprojet.ToString();
         }
+        #region datagrid
+        #region Distinction couleur par matière datagrid
         private void dataGridView1_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
@@ -587,13 +430,15 @@ namespace WindowsFormsApp4
                     {
                         dataGridView1.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.DarkBlue;
                     }
-                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() =="ER1" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() == "ER2" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() == "ER3" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() == "ER4" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("C#") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Projet"))
+                    if (dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() == "ER1" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() == "ER2" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() == "ER3" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString() == "ER4" || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("C#") || dataGridView1.Rows[rowIndex].Cells["matière"].Value.ToString().Contains("Projet"))
                     {
                         dataGridView1.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.DarkRed;
                     }
                 }
             }
         }
+        #endregion
+        #region Rafraichir datagrid
         void refreshDataGrid()
         {
             NpgsqlDataAdapter da = new NpgsqlDataAdapter();
@@ -622,6 +467,8 @@ namespace WindowsFormsApp4
                 column.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
         }
+        #endregion
+        #region Design du datagrid
         void drawDatagrid()
         {
             //design du datagrid
@@ -636,20 +483,22 @@ namespace WindowsFormsApp4
             dataGridView1.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
             dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            //dataGridView1.AutoSizeColumnsMode= DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView1.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             dataGridView1.AllowUserToOrderColumns = false;
             dataGridView1.AllowDrop = false;
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.ReadOnly = true;
         }
+        #endregion
+        #endregion
+        //Bouton permettant d'exporter le bulletin en pdf
         private void btn_savepdf_Click(object sender, EventArgs e)
         {
             if (dataGridView1.Rows.Count > 0)
             {
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "PDF (*.pdf)|*.pdf";
-                sfd.FileName = "Relevé de notes " + (Properties.Settings.Default.nom).ToUpper() +".pdf";
+                sfd.FileName = "Relevé de notes " + (Properties.Settings.Default.nom).ToUpper() + ".pdf";
                 bool fileError = false;
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
@@ -676,7 +525,7 @@ namespace WindowsFormsApp4
 
                             foreach (DataGridViewColumn column in dataGridView1.Columns)
                             {
-                                if(column.Name == "id")
+                                if (column.Name == "id")
                                 {
                                     continue;
                                 }
@@ -710,7 +559,7 @@ namespace WindowsFormsApp4
                                 int headermatiere = 0;
                                 int lastline = 0;
                                 string content = row.Cells["matière"].Value.ToString();
-                                if(row.Index == dataGridView1.Rows.Count - 1)
+                                if (row.Index == dataGridView1.Rows.Count - 1)
                                 {
                                     lastline = 1;
                                 }
@@ -740,7 +589,7 @@ namespace WindowsFormsApp4
                                 }
                                 foreach (DataGridViewCell cell in row.Cells)
                                 {
-                                    if(cell.ColumnIndex == dataGridView1.Columns["id"].DisplayIndex)
+                                    if (cell.ColumnIndex == dataGridView1.Columns["id"].DisplayIndex)
                                     {
                                         continue;
                                     }
@@ -752,7 +601,7 @@ namespace WindowsFormsApp4
                                     {
                                         cell1.BackgroundColor = new BaseColor(211, 211, 211);
                                     }
-                                    if(cell.ColumnIndex == dataGridView1.Columns["matière"].DisplayIndex)
+                                    if (cell.ColumnIndex == dataGridView1.Columns["matière"].DisplayIndex)
                                     {
                                         cell1.DisableBorderSide(Rectangle.RIGHT_BORDER);
                                         cell1.DisableBorderSide(Rectangle.TOP_BORDER);
@@ -764,14 +613,14 @@ namespace WindowsFormsApp4
                                         cell1.DisableBorderSide(Rectangle.TOP_BORDER);
                                         cell1.DisableBorderSide(Rectangle.BOTTOM_BORDER);
                                     }
-                                    if(cell.ColumnIndex == dataGridView1.Columns["note"].DisplayIndex)
+                                    if (cell.ColumnIndex == dataGridView1.Columns["note"].DisplayIndex)
                                     {
                                         cell1.DisableBorderSide(Rectangle.RIGHT_BORDER);
                                         cell1.DisableBorderSide(Rectangle.LEFT_BORDER);
                                         cell1.DisableBorderSide(Rectangle.TOP_BORDER);
                                         cell1.DisableBorderSide(Rectangle.BOTTOM_BORDER);
                                     }
-                                    if(lastline == 1)
+                                    if (lastline == 1)
                                     {
                                         cell1.EnableBorderSide(Rectangle.BOTTOM_BORDER);
                                     }
@@ -815,6 +664,7 @@ namespace WindowsFormsApp4
                 MessageBox.Show("Aucune donnée à exporter", "Erreur");
             }
         }
+        //Permet de rafraichir la moyenne générale
         void refreshMoyennG()
         {
             double moyenneth = calcMoyenneBlocTh(con, semestre);
@@ -857,15 +707,15 @@ namespace WindowsFormsApp4
             {
                 coefth = 0;
             }
-            if(moyennecom == 0)
+            if (moyennecom == 0)
             {
                 coefcom = 0;
             }
-            if(moyenneiut == 0)
+            if (moyenneiut == 0)
             {
                 coefiut = 0;
             }
-            if(moyenneprojet == 0)
+            if (moyenneprojet == 0)
             {
                 coefprojet = 0;
             }
@@ -873,7 +723,7 @@ namespace WindowsFormsApp4
             {
                 coefstage = 0;
             }
-            if(moyennecom == 0 && moyenneiut == 0 && moyenneprojet == 0 && moyennestage == 0 && moyenneth == 0)
+            if (moyennecom == 0 && moyenneiut == 0 && moyenneprojet == 0 && moyennestage == 0 && moyenneth == 0)
             {
                 moyenneg = 0;
             }
@@ -883,6 +733,30 @@ namespace WindowsFormsApp4
             }
             label_moyg.Text = "Moyenne générale: " + Math.Round(moyenneg, 2).ToString();
         }
+        #region Supprimer les notes
+        //Supprimer toutes les notes
+        private void btn_supprallnotes_Click(object sender, EventArgs e)
+        {
+
+            btn_supprallnotes.Enabled = false;
+            //message d'alarme
+            if (MessageBox.Show("Êtes-vous sûr de vouloir supprimer toutes les notes ?", "Confirmation de suppression", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                deleteAllOnlineMark(con);
+                NpgsqlDataAdapter da = new NpgsqlDataAdapter();
+                da = getOnlineMark(con, semestre);
+                DataSet ds = new DataSet();
+                da.Fill(ds, "moyennes");
+                dataGridView1.DataSource = ds;
+                dataGridView1.DataMember = "moyennes";
+                con.Close();
+                refreshRadarGraph();
+                refreshMoyennG();
+            }
+            btn_supprallnotes.Enabled = true;
+        }
+        #endregion
+        #region Logo et Diagramme pour le pdf
         private Byte[] getChartBuffer()
         {
             using (var ms = new MemoryStream())
@@ -916,30 +790,81 @@ namespace WindowsFormsApp4
                 return ms.ToArray();
             }
         }
-        private void btn_supprallnotes_Click(object sender, EventArgs e)
+        #endregion
+        #endregion
+        #region Part 4: CHAT EN DIRECT
+        #region Notifications
+        public bool CheckBoxNotifSound
         {
-            btn_supprallnotes.Enabled = false;
-            if (MessageBox.Show("Êtes-vous sûr de vouloir supprimer toutes les notes ?", "Confirmation de suppression", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            set
             {
-                deleteAllOnlineMark(con);
-                NpgsqlDataAdapter da = new NpgsqlDataAdapter();
-                da = getOnlineMark(con, semestre);
-                DataSet ds = new DataSet();
-                da.Fill(ds, "moyennes");
-                dataGridView1.DataSource = ds;
-                dataGridView1.DataMember = "moyennes";
-                con.Close();
-                refreshRadarGraph();
-                refreshMoyennG();
+                sound = value;
             }
-            btn_supprallnotes.Enabled = true;
+            get
+            {
+                return sound;
+            }
         }
-
-        public void focusChat()
+        public bool CheckBoxNotifVis
         {
-            tabControl1.SelectedTab = tabPage4;
+            set
+            {
+                vis = value;
+            }
+            get
+            {
+                return vis;
+            }
+        }
+        #endregion
+        #region Chat 
+        //Envoyer le message dans la textbox quand on clicke surle bouton
+        private void btn_envoyer_Click(object sender, EventArgs e)
+        {
+            btn_envoyer.Enabled = false;
+            SendMessage(txtbox_sendmsg.Text, con);
+            txtbox_sendmsg.Text = "";
+            btn_envoyer.Enabled = true;
+        }
+        //Envoyer le message en appuyant sur entrée --> actionne la fonction btn_envoyer_click
+        private void txtbox_sendmsg_KeyPress(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btn_envoyer_Click(sender, e);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
         }
 
+        //nettoyer le chat
+        private void btn_cleanchat_Click(object sender, EventArgs e)
+        {
+            btn_cleanchat.Enabled = false;
+            cleanChat(con);
+            btn_cleanchat.Enabled = true;
+        }
+        #endregion
+        //-----------------------THREAD POUR RECUPERER LES ELEVES EN LIGNE-----------------
+        private void ThreadLoop()
+        {
+            while (true)
+            {
+                try
+                {
+                    this.Invoke(new MethodInvoker(delegate { AllMessageLists(); }));
+                    this.Invoke(new MethodInvoker(delegate { RefreshOnline(); }));
+                    Console.WriteLine("OK");
+                    Thread.Sleep(200);
+                }
+                catch
+                {
+                    Console.WriteLine("Stop");
+                    break;
+                }
+            }
+        }
+        #region Récupérer les données par ordre d'envoi dans la base de données en ligne et les afficher dans la richtextbox
         //========ChatSystem utilisé dans le thread================//
         /// <summary>
         /// Récupère  les messages par ordre d'envoi dans la base de donnée en ligne. Les messages sont affichés dans la RichTextBox.
@@ -993,7 +918,7 @@ namespace WindowsFormsApp4
                             NotifyPopup("Nouveau message de " + dt.Rows[id - 1]["idetu"].ToString(), dt.Rows[id - 1]["msg"].ToString(), txtbox_sendmsg);
                         }
                     }
-                    if(first == 1)
+                    if (first == 1)
                     {
                         first = 0;
                     }
@@ -1022,16 +947,18 @@ namespace WindowsFormsApp4
                 DataTable dtOff = new DataTable();
                 con.Close();
                 con.Open();
-                NpgsqlCommand cmdOnline = new NpgsqlCommand("SELECT * FROM citise2 where isonline = @IsOnline", con);
+                NpgsqlCommand cmdOnline = new NpgsqlCommand("SELECT * FROM citise2 where isonline = @IsOnline", con);//Selectionne tous les actifs
                 cmdOnline.Parameters.AddWithValue("@IsOnline", 1);
                 NpgsqlDataReader dr = cmdOnline.ExecuteReader();
                 dtOn.Load(dr);
                 if (dtOn.Rows != null)
                 {
+                    //On ajoute au datatable prenom nom des users en ligne
                     foreach (DataRow drow in dtOn.Rows)
                     {
                         if (lb_Online.Items.Count == 0)
                         {
+
                             lb_Online.Items.Add(drow["prenom"].ToString() + " " + drow["nom"].ToString());
                         }
                         else
@@ -1068,5 +995,165 @@ namespace WindowsFormsApp4
             con.Close();
         }
         //---------------------------FIN DU FONCTION-----------------------
+        #endregion
+        #endregion
+        #region Part 5-6: CHROMEBROWSERS
+        #region Initialiser les différents chromebrowser
+        //initialiser les différents chromebrowser
+        public void InitializeChromium()
+        {
+            this.CenterToScreen();
+
+            // Creation d'un browser auquel on affecte l'adresse internet renseignée
+            chromeBrowser = new ChromiumWebBrowser("https://drive.google.com/drive/folders/1s_ZxJ0EDVw3Zs5Htzj0UJ4rZgEYiydTJ?usp=sharing");
+            chromeBrowser.DownloadHandler = new DownloadHandler();
+            panelweb.Controls.Add(chromeBrowser);//On ajoute le chromebrowser dans le conteneur dédié, ici panelweb
+
+            chromeBrowser.Dock = DockStyle.Fill;//On ajuste la position et la taille du browser pour remplir le conteneur
+            chromeBrowser.Size = panelweb.Size;
+            chromeBrowser.Anchor = panelweb.Anchor;
+            // Creation d'un browser auquel on affecte l'adresse internet renseignée
+            chromeBrowser1 = new ChromiumWebBrowser("https://mootse.telecom-st-etienne.fr/login/index.php");
+            chromeBrowser1.DownloadHandler = new DownloadHandler();
+            metroTabPage1.Controls.Add(chromeBrowser1);
+            this.CenterToParent();
+            chromeBrowser1.Size = metroTabPage1.Size;
+            // Creation d'un browser auquel on affecte l'adresse internet renseignée
+            chromeBrowser2 = new ChromiumWebBrowser("https://cas.univ-st-etienne.fr/esup-cas/login?service=https://ent.univ-st-etienne.fr/uPortal/Login");
+            chromeBrowser2.DownloadHandler = new DownloadHandler();
+            metroTabPage2.Controls.Add(chromeBrowser2);
+            LifespanHandler life = new LifespanHandler();
+            chromeBrowser2.LifeSpanHandler = life;
+            life.popup_request += life_popup_request;
+            this.CenterToParent();
+            chromeBrowser2.Size = metroTabPage2.Size;
+            
+        }
+        #endregion
+        #region Garder les nouvelles fenetres internet dans l'application
+        //éviter les popup, garder les nouvelles pages ouverte dans l'application
+        private void carregar_popup_new_browser(string url)
+        {
+            
+            chromeBrowser2 = new ChromiumWebBrowser(url);
+            chromeBrowser2.DownloadHandler = new DownloadHandler();//Attribution d'une nouvelle adresse au chromebrowser
+            this.Invoke((MethodInvoker)delegate ()
+            {
+                this.metroTabPage2.Controls.Clear();//On enleve le chromebrowser dans le conteneur
+                this.metroTabPage2.Controls.Add(chromeBrowser2);//On ajouter le chromebrowser avec nouvelle adresse dans le conteneur--> rafraichissement en direct
+            });
+            chromeBrowser2.Dock = DockStyle.Fill;
+            
+        }
+        private void life_popup_request(string obj)
+        {
+            this.carregar_popup_new_browser(obj);
+        }
+        #endregion
+        #endregion
+
+        #region mouvement de la souris panel1
+        private void panel1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (scrolled)
+            {
+                this.Left = e.X + this.Left - (pointChat.X);
+                this.Top = e.Y + this.Top - (pointChat.Y);
+            }
+        }
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            scrolled = true;
+            this.Cursor = Cursors.SizeAll;
+            pointChat = e.Location;
+        }
+
+        private void panel1_MouseUp(object sender, MouseEventArgs e)
+        {
+            scrolled = false;
+            this.Cursor = Cursors.Default;
+        }
+        #endregion
+      
+        
+
+       
+
+        //--------------------CHARGEMENT DU PANEL PRINCIPAL---------------------
+        private void ProjetAccueil_Load(object sender, EventArgs e)
+        {
+            #region Récupération des liens ical
+            //On récupère les liens ical télécom personnalisés de l'utilisateur grace à son id nom.prenom
+            calTSE = "https://www.telecom-st-etienne.fr/intranet/icsbyuid.php?uid=" + Properties.Settings.Default.idetu;
+            //On spécifie le groupe de l'utilisateur et en fonction on récupère son lien ical iut
+            string groupe = Properties.Settings.Default.groupe;
+            switch (groupe)
+            {
+                case "A1":
+                    calIUT = "https://planning.univ-st-etienne.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=4620&projectId=3&calType=ical&firstDate=2019-08-20&lastDate=2020-08-19";
+                    break;
+                case "A2":
+                    calIUT = "https://planning.univ-st-etienne.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=4619&projectId=3&calType=ical&firstDate=2019-08-20&lastDate=2020-08-19";
+                    break;
+                case "B1":
+                    calIUT = "https://planning.univ-st-etienne.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=5426&projectId=3&calType=ical&firstDate=2019-08-20&lastDate=2020-08-19";
+                    break;
+                case "B2":
+                    calIUT = "https://planning.univ-st-etienne.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=5425&projectId=3&calType=ical&firstDate=2019-08-20&lastDate=2020-08-19";
+                    break;
+            }
+            setIcalDB(calIUT, calTSE, con, con1, pieChart, chart1, sl);
+            GetIcal(listlbCal, con, con1, lv_nextEval);
+            #endregion
+            #region choix du semestre pour son bulletin
+            
+            drawDatagrid();
+            //---------------------------------DATAGRID AU LANCEMENT DE L'APPLI---------------------------------
+            con.Close();
+            con.Open();
+
+            //On efface le contenu de moyennes
+            cmd = new NpgsqlCommand("delete from moyennes", con);
+            cmd.ExecuteNonQuery();
+
+            //On affiche moyennes sur le datagrid
+            refreshDataGrid();
+            con.Close();
+
+            refreshRadarGraph();
+            refreshMoyennG();
+            lbl_warningeval.Text = lbl_warningeval.Text + lv_nextEval.Items.Count.ToString() + " évaluation(s) prévue(s) pour les 7 prochains jours";
+            radioS1.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);//4 boutons pour sélectionner le bulletin de chaque semestre
+            radioS2.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
+            radioS3.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
+            radioS4.CheckedChanged += new EventHandler(radioButtons_CheckedChanged);
+
+            chatThread.Start();
+            #endregion
+        }
+
+     
+        #region empecher de redimensionner ou de changer la case des listview
+        //------------------------EMPECHE L'UTILISATEUR DE REDIMENSIONNER LA COLONNE DES LISTVIEW-------------
+        private void lbCal_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
+        {
+            e.Cancel = true;
+            e.NewWidth = -1;
+        }
+        private void lbCal_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+                e.Item.Selected = false;
+        }
+        #endregion
+
+
+      
+
+
+
+
+
     }
 }
