@@ -160,10 +160,10 @@
             this.btn_valider.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_valider.ForeColor = System.Drawing.Color.Black;
             this.btn_valider.Image = ((System.Drawing.Image)(resources.GetObject("btn_valider.Image")));
-            this.btn_valider.Location = new System.Drawing.Point(127, 566);
+            this.btn_valider.Location = new System.Drawing.Point(169, 566);
             this.btn_valider.Margin = new System.Windows.Forms.Padding(4);
             this.btn_valider.Name = "btn_valider";
-            this.btn_valider.Size = new System.Drawing.Size(223, 82);
+            this.btn_valider.Size = new System.Drawing.Size(195, 82);
             this.btn_valider.TabIndex = 16;
             this.btn_valider.Text = "Valider";
             this.btn_valider.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;

@@ -75,23 +75,50 @@ namespace WindowsFormsApp4
         private void btn_valider_Click(object sender, EventArgs e)
         {
             btn_valider.Enabled = false;
+            con.Close();
             con.Open();
-            if (txtbx_mdp.Text == txtbx_cmdp.Text)
+            if (txtbx_numetu.Text != "" && txtbx_prenom.Text != "" && txtbx_qstn.Text != "" && txtbx_nom.Text != "" && txtbx_mdp.Text != "" && cb_groupe.SelectedItem.ToString() != "")
             {
-                cmd = new NpgsqlCommand("insert into citise2 (Nom, Prenom, Password, Groupe, Idetu, Question)" + " values (@Nom, @Prenom, @Password, @Groupe, @Idetu, @Question)", con);
-                cmd.Parameters.AddWithValue("@Nom", txtbx_nom.Text);
-                cmd.Parameters.AddWithValue("@Prenom", txtbx_prenom.Text);
-                cmd.Parameters.AddWithValue("@Password", txtbx_mdp.Text);
-                cmd.Parameters.AddWithValue("@Groupe", cb_groupe.SelectedItem);
-                cmd.Parameters.AddWithValue("@Idetu", txtbx_numetu.Text);
-                cmd.Parameters.AddWithValue("@Question", txtbx_qstn.Text);
-                cmd.ExecuteNonQuery();
-                MessageBox.Show("Vous avez fini votre inscription avec succès");
-                btn_valider_Click(sender, e);
+                if (txtbx_mdp.Text == txtbx_cmdp.Text)
+                {
+                    NpgsqlCommand cmdd = new NpgsqlCommand("Select * from citise2", con);
+                    NpgsqlDataReader dr = cmdd.ExecuteReader();
+                    int exist = 0;
+                    while (dr.Read())
+                    {
+                        if (dr["idetu"].ToString() == txtbx_numetu.Text)
+                        {
+                            exist = 1;
+                        }
+                    }
+                    con.Close();
+                    con.Open();
+                    if (exist == 0)
+                    {
+                        cmd = new NpgsqlCommand("insert into citise2 (Nom, Prenom, Password, Groupe, Idetu, Question)" + " values (@Nom, @Prenom, @Password, @Groupe, @Idetu, @Question)", con);
+                        cmd.Parameters.AddWithValue("@Nom", txtbx_nom.Text);
+                        cmd.Parameters.AddWithValue("@Prenom", txtbx_prenom.Text);
+                        cmd.Parameters.AddWithValue("@Password", txtbx_mdp.Text);
+                        cmd.Parameters.AddWithValue("@Groupe", cb_groupe.SelectedItem);
+                        cmd.Parameters.AddWithValue("@Idetu", txtbx_numetu.Text);
+                        cmd.Parameters.AddWithValue("@Question", txtbx_qstn.Text);
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Vous avez fini votre inscription avec succès");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Cet utilisateur existe déjà", "Compte existant");
+                    }
+                }
+
+                else
+                {
+                    MessageBox.Show("Erreur de confirmation de mot de passe", "Erreur de saisie");
+                }
             }
             else
             {
-                MessageBox.Show("erreur de confirmation de mot de passe");
+                MessageBox.Show("Veuillez remplir tous les champs du formulaire", "Erreur de saisie");
             }
             con.Close();
             btn_valider.Enabled = true;
